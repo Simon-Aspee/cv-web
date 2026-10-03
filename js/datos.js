@@ -72,7 +72,8 @@ const DATOS = {
      - tecnologias: lista de etiquetas. [] si no tiene.
      - links.demo: link al sitio en vivo, o null.
      - links.codigo: link al repo, o null.
-     - links.notaCodigo: texto que se muestra si no hay link al código ("" para nada). */
+     - links.notaCodigo: texto que se muestra si no hay link al código ("" para nada).
+     El primer proyecto de la lista se muestra como destacado. */
   proyectos: [
     {
       nombre: "Saudino",

@@ -1,22 +1,47 @@
 /* =====================================================================
-   styles.css — Estilos BASE (Fase 1): solo lo justo para que se lea.
-   El diseño visual completo llega en la Fase 2.
-   Todos los colores están en :root para cambiarlos en una línea.
+   styles.css — Diseño de la página (mobile-first).
+   Todos los colores, tamaños y radios están en :root: para cambiar algo
+   (por ejemplo, el color de acento) basta con editar una línea.
    ===================================================================== */
 
 :root {
-  --color-fondo: #0f1115;
-  --color-superficie: #171a21;
-  --color-borde: #2a2e38;
-  --color-texto: #e8e8ea;
-  --color-texto-suave: #a3a6ad;
-  --color-acento: #c8444f;        /* Rojo del CV: botones, bordes, íconos. */
-  --color-acento-claro: #ec8f97;  /* Versión clara para texto chico (contraste AA). */
+  color-scheme: dark;
 
-  --fuente-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --ancho-max: 46rem;
-  --radio: 0.75rem;
+  /* ---------- Colores ---------- */
+  --color-fondo: #181416;          /* Carbón cálido */
+  --color-superficie: #221d20;     /* Tarjetas */
+  --color-borde: #352e32;
+  --color-borde-acento: #5a2c33;   /* Borde de las tarjetas destacadas */
+  --color-texto: #f1ebec;
+  --color-texto-suave: #b5abae;    /* Fechas y textos secundarios (AA) */
+  --color-acento: #c8444f;         /* Rojo del CV: botones, línea de tiempo, íconos */
+  --color-acento-oscuro: #b33a45;  /* Hover del botón principal */
+  --color-acento-claro: #f2939b;   /* Para texto chico con acento (AA) */
+  --color-sobre-acento: #ffffff;   /* Texto encima del rojo */
+  --color-halo: rgba(200, 68, 79, 0.25);
+
+  /* ---------- Tipografía ---------- */
+  --fuente: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --texto-xs: 0.875rem;   /* 14 px */
+  --texto-sm: 0.9375rem;  /* 15 px */
+  --texto-base: 1rem;     /* 16 px */
+  --texto-md: 1.125rem;   /* 18 px */
+  --texto-lg: 1.5rem;     /* 24 px */
+  --texto-xl: clamp(2.25rem, 1.5rem + 3.6vw, 3.5rem); /* 36 → 56 px */
+
+  /* ---------- Medidas ---------- */
+  --ancho: 42rem;
+  --margen: 1rem;
+  --separacion-secciones: 3.5rem;
+  --radio-sm: 10px;       /* Botones */
+  --radio: 14px;          /* Tarjetas */
+  --radio-lg: 20px;       /* Tarjetas destacadas */
+  --radio-foto: 26%;      /* Esquinas de ícono de app */
+  --radio-pildora: 999px;
+  --toque: 44px;          /* Área táctil mínima */
 }
+
+/* ---------- Base ---------- */
 
 *,
 *::before,
@@ -28,55 +53,70 @@
   display: none !important;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background: var(--color-fondo);
   color: var(--color-texto);
-  font-family: var(--fuente-base);
+  font-family: var(--fuente);
+  font-size: var(--texto-base);
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-.hero,
-main,
-.footer {
-  max-width: var(--ancho-max);
-  margin-inline: auto;
-  padding-inline: 1rem;
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
 }
 
 img {
+  display: block;
   max-width: 100%;
   height: auto;
 }
 
 a {
   color: var(--color-acento-claro);
+  text-underline-offset: 0.2em;
 }
 
-.hero__foto {
-  width: 8rem;
-  margin-top: 1.5rem;
+:focus-visible {
+  outline: 2px solid var(--color-acento-claro);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
 }
 
 .icono {
   display: inline-flex;
-  vertical-align: middle;
-  margin-inline-end: 0.35em;
+  flex-shrink: 0;
 }
 
-.tarjeta {
-  background: var(--color-superficie);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-  padding: 1rem;
-  margin-block: 1rem;
-}
-
-.meta,
-.nota,
-.proyecto__tipo,
-.proyecto__contexto {
+.texto-suave {
   color: var(--color-texto-suave);
+}
+
+.fecha {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+  white-space: nowrap;
 }
 
 /* Texto solo para lectores de pantalla. */
@@ -90,4 +130,542 @@ a {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ---------- Columna centrada ---------- */
+
+.hero,
+main,
+.footer {
+  width: 100%;
+  max-width: calc(var(--ancho) + 2 * var(--margen));
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+
+/* ---------- Barra superior ---------- */
+
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.75rem;
+}
+
+.monograma {
+  font-size: var(--texto-md);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.redes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.redes__link {
+  display: inline-grid;
+  place-items: center;
+  width: var(--toque);
+  height: var(--toque);
+  border: 1px solid var(--color-borde);
+  border-radius: 50%;
+  color: var(--color-texto);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.redes__link:hover {
+  border-color: var(--color-acento);
+  color: var(--color-acento-claro);
+}
+
+/* ---------- Hero ---------- */
+
+.hero__cuerpo {
+  display: grid;
+  gap: 1.5rem;
+  padding-block: 2rem 2.75rem;
+}
+
+.hero__foto {
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: var(--radio-foto);
+  object-fit: cover;
+}
+
+.hero__texto {
+  display: grid;
+  justify-items: start;
+  gap: 0.875rem;
+}
+
+.hero__nombre {
+  font-size: var(--texto-xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.hero__subtitulo {
+  max-width: 36ch;
+  font-size: var(--texto-md);
+  line-height: 1.45;
+}
+
+.hero__ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.hero__ubicacion svg {
+  width: 16px;
+  height: 16px;
+}
+
+.distintivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  font-size: var(--texto-xs);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.distintivo__punto {
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-acento);
+  box-shadow: 0 0 0 3px var(--color-halo);
+}
+
+.hero__texto .acciones {
+  margin-top: 0.5rem;
+}
+
+/* ---------- Botones ---------- */
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--toque);
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  background: transparent;
+  color: var(--color-texto);
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.boton:hover {
+  border-color: var(--color-acento);
+}
+
+.boton--principal {
+  border-color: var(--color-acento);
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
+}
+
+.boton--principal:hover {
+  border-color: var(--color-acento-oscuro);
+  background: var(--color-acento-oscuro);
+}
+
+/* ---------- Secciones ---------- */
+
+main {
+  display: grid;
+  gap: var(--separacion-secciones);
+  padding-bottom: var(--separacion-secciones);
+}
+
+.seccion {
+  display: grid;
+  gap: 1rem;
+}
+
+.seccion > h2 {
+  font-size: var(--texto-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Tarjetas ---------- */
+
+.tarjeta {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+/* :where() deja la especificidad en 0, así una clase propia del h3 siempre gana. */
+:where(.tarjeta) h3 {
+  font-size: var(--texto-md);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.tarjeta__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.tarjeta__detalle {
+  margin-top: 0.15rem;
+  font-weight: 500;
+}
+
+.prosa {
+  gap: 1rem;
+}
+
+.prosa p {
+  max-width: 65ch;
+}
+
+/* ---------- Datos destacados ---------- */
+
+.destacados {
+  display: grid;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.destacado {
+  padding: 1rem 1.25rem;
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.destacado + .destacado {
+  border-top: 1px solid var(--color-borde);
+}
+
+/* ---------- Proyectos ---------- */
+
+.proyecto {
+  gap: 0.75rem;
+}
+
+.proyecto--destacado {
+  padding: 1.5rem;
+  border-color: var(--color-borde-acento);
+  border-radius: var(--radio-lg);
+}
+
+.proyecto__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.proyecto--destacado .proyecto__nombre {
+  font-size: var(--texto-lg);
+  letter-spacing: -0.02em;
+}
+
+.estado {
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.subtitulo {
+  margin-top: 0.75rem;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: 600;
+}
+
+.proyecto__links {
+  margin-top: 0.5rem;
+}
+
+/* Línea de tiempo: punto hueco = etapa anterior, punto relleno = etapa actual. */
+.linea-tiempo {
+  --nodo: 0.875rem;
+  --sangria: 1.75rem;
+  --hueco: 1.25rem;
+  display: grid;
+  gap: var(--hueco);
+  padding-left: var(--sangria);
+}
+
+.linea-tiempo__etapa {
+  position: relative;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.linea-tiempo__etapa::before {
+  content: "";
+  position: absolute;
+  top: calc(0.8em - var(--nodo) / 2);
+  left: calc(-1 * var(--sangria));
+  width: var(--nodo);
+  height: var(--nodo);
+  border: 2px solid var(--color-acento);
+  border-radius: 50%;
+  background: var(--color-superficie);
+}
+
+.linea-tiempo__etapa--actual::before {
+  background: var(--color-acento);
+  box-shadow: 0 0 0 4px var(--color-halo);
+}
+
+/* Tramo que une cada punto con el siguiente. */
+.linea-tiempo__etapa:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: calc(0.8em + var(--nodo) / 2);
+  bottom: calc(-1 * var(--hueco) - 0.8em + var(--nodo) / 2);
+  left: calc(-1 * var(--sangria) + var(--nodo) / 2 - 1px);
+  width: 2px;
+  background: var(--color-acento);
+}
+
+.linea-tiempo__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.75rem;
+}
+
+.lista {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.lista li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.lista li::before {
+  content: "";
+  position: absolute;
+  top: 0.8em;
+  left: 0;
+  width: 0.45rem;
+  height: 2px;
+  background: var(--color-texto-suave);
+}
+
+/* ---------- Etiquetas ---------- */
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.proyecto .etiquetas {
+  margin-top: 0.5rem;
+}
+
+.etiqueta {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 1rem; /* Píldora en una línea; si el texto baja a dos, queda rectángulo redondeado. */
+  background: var(--color-fondo);
+  font-size: var(--texto-xs);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ---------- Otros trabajos ---------- */
+
+.lista-compacta__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 1rem;
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.lista-compacta__item:first-child {
+  border-top: 0;
+}
+
+.lista-compacta__item:last-child {
+  padding-bottom: 0;
+}
+
+.lista-compacta__lugar {
+  font-weight: 600;
+}
+
+.lista-compacta__cargo {
+  grid-column: 1 / -1;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.lista-compacta__fechas {
+  grid-row: 1;
+  grid-column: 2;
+  align-self: baseline;
+}
+
+/* ---------- Habilidades ---------- */
+
+/* Una sola tarjeta con una fila por grupo, separadas por líneas. */
+.habilidades {
+  gap: 0;
+}
+
+.habilidad {
+  display: grid;
+  gap: 0.6rem;
+  padding-block: 1rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.habilidad:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.habilidad:last-child {
+  padding-bottom: 0;
+}
+
+.habilidad__grupo {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: 600;
+}
+
+/* ---------- Cierre (contacto) ---------- */
+
+.seccion--cierre {
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--color-borde-acento);
+  border-radius: var(--radio-lg);
+  background: var(--color-superficie);
+}
+
+.seccion--cierre > h2 {
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.seccion--cierre .acciones {
+  margin-top: 0.5rem;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  padding-block: 1.5rem 2.5rem;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+}
+
+/* ---------- Pantallas medianas ---------- */
+
+@media (min-width: 600px) {
+  :root {
+    --margen: 1.5rem;
+  }
+
+  .destacados {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .destacado + .destacado {
+    border-top: 0;
+    border-left: 1px solid var(--color-borde);
+  }
+
+  .habilidad {
+    grid-template-columns: 11rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+  }
+}
+
+/* ---------- Escritorio ---------- */
+
+@media (min-width: 768px) {
+  :root {
+    --separacion-secciones: 4.5rem;
+  }
+
+  .hero__cuerpo {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 2rem;
+    padding-block: 3.5rem 4rem;
+  }
+
+  .hero__foto {
+    width: 8.5rem;
+    height: 8.5rem;
+  }
+
+  .tarjeta {
+    padding: 1.5rem;
+  }
+
+  .proyecto--destacado {
+    padding: 2rem;
+  }
+
+  .seccion--cierre {
+    padding: 2.25rem 2rem;
+  }
+}
+
+/* ---------- Movimiento reducido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }

@@ -92,27 +92,49 @@
 
   /* ---------- Secciones ---------- */
 
+  // "Simón Aspée" → "SA".
+  function iniciales(nombre) {
+    return nombre.trim().split(/\s+/).map(function (parte) { return parte[0]; }).join("").slice(0, 2).toUpperCase();
+  }
+
   function renderHero(perfil, disponibilidad, contacto) {
     const hero = document.getElementById("hero");
     const whatsapp = linkWhatsApp(contacto.whatsapp);
 
-    if (hayTexto(perfil.foto)) {
-      // Está en el hero: se carga altiro, sin loading="lazy".
-      hero.append(crear("img", { class: "hero__foto", src: perfil.foto, alt: "Foto de " + perfil.nombre }));
+    // Barra superior: iniciales + íconos sociales.
+    const redes = [];
+    if (hayTexto(contacto.github)) {
+      redes.push(linkExterno(contacto.github, { class: "redes__link", "aria-label": "GitHub" }, icono("github")));
     }
+    if (hayTexto(contacto.linkedin)) {
+      redes.push(linkExterno(contacto.linkedin, { class: "redes__link", "aria-label": "LinkedIn" }, icono("linkedin")));
+    }
+    if (hayTexto(contacto.correo)) {
+      redes.push(crear("a", { class: "redes__link", href: "mailto:" + contacto.correo, "aria-label": "Correo" }, icono("correo")));
+    }
+    hero.append(crear("div", { class: "barra" }, [
+      hayTexto(perfil.nombre) ? crear("span", { class: "monograma", "aria-hidden": "true" }, iniciales(perfil.nombre)) : null,
+      redes.length ? crear("ul", { class: "redes" }, redes.map(function (link) { return crear("li", {}, link); })) : null
+    ]));
 
-    hero.append(crear("h1", { class: "hero__nombre" }, perfil.nombre));
+    // Cuerpo: foto + texto.
+    const texto = crear("div", { class: "hero__texto" });
+
+    texto.append(crear("h1", { class: "hero__nombre" }, perfil.nombre));
 
     if (hayTexto(perfil.subtitulo)) {
-      hero.append(crear("p", { class: "hero__subtitulo" }, perfil.subtitulo));
+      texto.append(crear("p", { class: "hero__subtitulo" }, perfil.subtitulo));
     }
 
     if (hayTexto(perfil.ubicacion)) {
-      hero.append(crear("p", { class: "hero__ubicacion" }, [icono("ubicacion"), perfil.ubicacion]));
+      texto.append(crear("p", { class: "hero__ubicacion" }, [icono("ubicacion"), perfil.ubicacion]));
     }
 
     if (disponibilidad && disponibilidad.mostrar && hayTexto(disponibilidad.texto)) {
-      hero.append(crear("p", { class: "distintivo" }, disponibilidad.texto));
+      texto.append(crear("p", { class: "distintivo" }, [
+        crear("span", { class: "distintivo__punto", "aria-hidden": "true" }),
+        disponibilidad.texto
+      ]));
     }
 
     const acciones = [];
@@ -123,22 +145,23 @@
       acciones.push(linkExterno(whatsapp, { class: "boton" }, [icono("whatsapp"), "WhatsApp"]));
     }
     if (acciones.length) {
-      hero.append(crear("div", { class: "hero__acciones" }, acciones));
+      texto.append(crear("div", { class: "acciones" }, acciones));
     }
 
-    const redes = [];
-    if (hayTexto(contacto.github)) {
-      redes.push(linkExterno(contacto.github, { "aria-label": "GitHub" }, icono("github")));
+    const cuerpo = crear("div", { class: "hero__cuerpo" });
+    if (hayTexto(perfil.foto)) {
+      // Está en el hero: se carga altiro, sin loading="lazy".
+      cuerpo.append(crear("img", {
+        class: "hero__foto",
+        src: perfil.foto,
+        alt: "Foto de " + perfil.nombre,
+        width: "600",
+        height: "600",
+        fetchpriority: "high"
+      }));
     }
-    if (hayTexto(contacto.linkedin)) {
-      redes.push(linkExterno(contacto.linkedin, { "aria-label": "LinkedIn" }, icono("linkedin")));
-    }
-    if (hayTexto(contacto.correo)) {
-      redes.push(crear("a", { href: "mailto:" + contacto.correo, "aria-label": "Correo" }, icono("correo")));
-    }
-    if (redes.length) {
-      hero.append(crear("ul", { class: "redes" }, redes.map(function (link) { return crear("li", {}, link); })));
-    }
+    cuerpo.append(texto);
+    hero.append(cuerpo);
   }
 
   function renderDestacados(destacados) {
@@ -154,12 +177,12 @@
     const items = textos(parrafos);
     if (!items.length) return;
     const seccion = abrirSeccion("sobre-mi", "Sobre mí");
-    items.forEach(function (texto) {
-      seccion.append(crear("p", {}, texto));
-    });
+    seccion.append(crear("div", { class: "tarjeta prosa" }, items.map(function (texto) {
+      return crear("p", {}, texto);
+    })));
   }
 
-  function renderProyecto(proyecto) {
+  function renderProyecto(proyecto, destacado) {
     const links = proyecto.links || {};
     const historia = (proyecto.historia || []).filter(function (etapa) {
       return etapa && (hayTexto(etapa.etapa) || hayTexto(etapa.texto));
@@ -167,31 +190,37 @@
     const aprendizajes = textos(proyecto.aprendizajes);
     const tecnologias = textos(proyecto.tecnologias);
 
-    const tarjeta = crear("article", { class: "tarjeta proyecto" });
+    const tarjeta = crear("article", { class: destacado ? "tarjeta proyecto proyecto--destacado" : "tarjeta proyecto" });
 
     tarjeta.append(crear("div", { class: "proyecto__cabecera" }, [
-      crear("h3", {}, proyecto.nombre),
+      crear("h3", { class: "proyecto__nombre" }, proyecto.nombre),
+      " ",
       hayTexto(proyecto.estado) ? crear("span", { class: "estado" }, proyecto.estado) : null
     ]));
 
-    if (hayTexto(proyecto.tipo)) tarjeta.append(crear("p", { class: "proyecto__tipo" }, proyecto.tipo));
-    if (hayTexto(proyecto.contexto)) tarjeta.append(crear("p", { class: "proyecto__contexto" }, proyecto.contexto));
-    if (hayTexto(proyecto.descripcion)) tarjeta.append(crear("p", {}, proyecto.descripcion));
+    if (hayTexto(proyecto.tipo)) tarjeta.append(crear("p", { class: "texto-suave" }, proyecto.tipo));
+    if (hayTexto(proyecto.contexto)) tarjeta.append(crear("p", { class: "texto-suave" }, proyecto.contexto));
+    if (hayTexto(proyecto.descripcion)) tarjeta.append(crear("p", { class: "proyecto__descripcion" }, proyecto.descripcion));
 
     if (historia.length) {
-      tarjeta.append(crear("h4", {}, "Historia"));
-      tarjeta.append(crear("ol", { class: "linea-tiempo" }, historia.map(function (etapa) {
-        const encabezado = [etapa.etapa, etapa.fecha].filter(hayTexto).join(" · ");
-        return crear("li", {}, [
-          crear("strong", {}, encabezado),
+      tarjeta.append(crear("h4", { class: "subtitulo" }, "Historia"));
+      // La última etapa es la actual: se marca con el punto relleno.
+      tarjeta.append(crear("ol", { class: "linea-tiempo" }, historia.map(function (etapa, i) {
+        const actual = i === historia.length - 1;
+        return crear("li", { class: actual ? "linea-tiempo__etapa linea-tiempo__etapa--actual" : "linea-tiempo__etapa" }, [
+          crear("p", { class: "linea-tiempo__cabecera" }, [
+            hayTexto(etapa.etapa) ? crear("strong", {}, etapa.etapa) : null,
+            " ",
+            hayTexto(etapa.fecha) ? crear("span", { class: "fecha" }, etapa.fecha) : null
+          ]),
           hayTexto(etapa.texto) ? crear("p", {}, etapa.texto) : null
         ]);
       })));
     }
 
     if (aprendizajes.length) {
-      tarjeta.append(crear("h4", {}, "Lo que aprendí"));
-      tarjeta.append(crear("ul", {}, aprendizajes.map(function (texto) { return crear("li", {}, texto); })));
+      tarjeta.append(crear("h4", { class: "subtitulo" }, "Lo que aprendí"));
+      tarjeta.append(crear("ul", { class: "lista" }, aprendizajes.map(function (texto) { return crear("li", {}, texto); })));
     }
 
     if (tecnologias.length) {
@@ -203,8 +232,8 @@
     const pie = [];
     if (hayTexto(links.demo)) pie.push(linkExterno(links.demo, { class: "boton" }, [icono("externo"), "Ver sitio en vivo"]));
     if (hayTexto(links.codigo)) pie.push(linkExterno(links.codigo, { class: "boton" }, [icono("github"), "Ver código"]));
-    else if (hayTexto(links.notaCodigo)) pie.push(crear("p", { class: "nota" }, links.notaCodigo));
-    if (pie.length) tarjeta.append(crear("div", { class: "proyecto__links" }, pie));
+    else if (hayTexto(links.notaCodigo)) pie.push(crear("p", { class: "texto-suave" }, links.notaCodigo));
+    if (pie.length) tarjeta.append(crear("div", { class: "acciones proyecto__links" }, pie));
 
     return tarjeta;
   }
@@ -213,9 +242,21 @@
     const lista = (proyectos || []).filter(function (p) { return p && hayTexto(p.nombre); });
     if (!lista.length) return;
     const seccion = abrirSeccion("proyectos", "Proyectos");
-    lista.forEach(function (proyecto) {
-      seccion.append(renderProyecto(proyecto));
+    // El primer proyecto de la lista se muestra destacado.
+    lista.forEach(function (proyecto, i) {
+      seccion.append(renderProyecto(proyecto, i === 0));
     });
+  }
+
+  // Título + detalle a la izquierda, fechas a la derecha (abajo en el celular).
+  function cabeceraTarjeta(titulo, detalle, fechas) {
+    return crear("div", { class: "tarjeta__cabecera" }, [
+      crear("div", {}, [
+        crear("h3", {}, titulo),
+        hayTexto(detalle) ? crear("p", { class: "tarjeta__detalle" }, detalle) : null
+      ]),
+      hayTexto(fechas) ? crear("p", { class: "fecha" }, fechas) : null
+    ]);
   }
 
   function renderExperiencia(experiencia, otrosTrabajos) {
@@ -228,10 +269,8 @@
     const seccion = abrirSeccion("experiencia", "Experiencia");
 
     lista.forEach(function (trabajo) {
-      const detalle = [trabajo.lugar, trabajo.fechas].filter(hayTexto).join(" · ");
       seccion.append(crear("article", { class: "tarjeta" }, [
-        crear("h3", {}, trabajo.cargo),
-        detalle ? crear("p", { class: "meta" }, detalle) : null,
+        cabeceraTarjeta(trabajo.cargo, trabajo.lugar, trabajo.fechas),
         hayTexto(trabajo.descripcion) ? crear("p", {}, trabajo.descripcion) : null
       ]));
     });
@@ -240,7 +279,13 @@
       seccion.append(crear("article", { class: "tarjeta" }, [
         hayTexto(otrosTrabajos.titulo) ? crear("h3", {}, otrosTrabajos.titulo) : null,
         crear("ul", { class: "lista-compacta" }, otros.map(function (t) {
-          return crear("li", {}, [t.lugar, t.cargo, t.fechas].filter(hayTexto).join(" · "));
+          return crear("li", { class: "lista-compacta__item" }, [
+            crear("span", { class: "lista-compacta__lugar" }, t.lugar),
+            " ",
+            hayTexto(t.cargo) ? crear("span", { class: "lista-compacta__cargo" }, t.cargo) : null,
+            " ",
+            hayTexto(t.fechas) ? crear("span", { class: "fecha lista-compacta__fechas" }, t.fechas) : null
+          ]);
         }))
       ]));
     }
@@ -252,9 +297,7 @@
     const seccion = abrirSeccion("educacion", "Educación");
     lista.forEach(function (estudio) {
       seccion.append(crear("article", { class: "tarjeta" }, [
-        crear("h3", {}, estudio.institucion),
-        hayTexto(estudio.titulo) ? crear("p", {}, estudio.titulo) : null,
-        hayTexto(estudio.fechas) ? crear("p", { class: "meta" }, estudio.fechas) : null
+        cabeceraTarjeta(estudio.institucion, estudio.titulo, estudio.fechas)
       ]));
     });
   }
@@ -263,14 +306,14 @@
     const grupos = (habilidades || []).filter(function (g) { return g && hayTexto(g.grupo) && textos(g.items).length; });
     if (!grupos.length) return;
     const seccion = abrirSeccion("habilidades", "Habilidades");
-    grupos.forEach(function (grupo) {
-      seccion.append(crear("div", { class: "tarjeta habilidad" }, [
-        crear("h3", {}, grupo.grupo),
+    seccion.append(crear("div", { class: "tarjeta habilidades" }, grupos.map(function (grupo) {
+      return crear("div", { class: "habilidad" }, [
+        crear("h3", { class: "habilidad__grupo" }, grupo.grupo),
         crear("ul", { class: "etiquetas" }, textos(grupo.items).map(function (texto) {
           return crear("li", { class: "etiqueta" }, texto);
         }))
-      ]));
-    });
+      ]);
+    })));
   }
 
   function renderContacto(contacto, cierre) {
@@ -288,7 +331,7 @@
     if (hayTexto(contacto.telefono)) {
       acciones.push(crear("a", { class: "boton", href: "tel:" + contacto.telefono.replace(/[^\d+]/g, "") }, [icono("telefono"), contacto.telefono]));
     }
-    seccion.append(crear("div", { class: "contacto__acciones" }, acciones));
+    seccion.append(crear("div", { class: "acciones" }, acciones));
   }
 
   function renderFooter(perfil) {

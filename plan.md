@@ -241,9 +241,9 @@ const DATOS = {
 
 ### Fase 2: Diseño visual (con la skill frontend-design)
 
-- [ ] Definir la dirección visual dentro de las decisiones de la sección 3.
-- [ ] Definir en `:root` las variables CSS de colores, tipografía, espaciados y radios.
-- [ ] Diseñar el hero, las tarjetas de proyectos (Saudino con su mini línea de tiempo), la experiencia, la educación, las habilidades y el contacto.
+- [x] Definir la dirección visual dentro de las decisiones de la sección 3. (Fondo carbón cálido `#181416`, fuente Schibsted Grotesk, foto con esquinas de ícono de app y la línea de tiempo de Saudino como elemento protagonista.)
+- [x] Definir en `:root` las variables CSS de colores, tipografía, espaciados y radios.
+- [x] Diseñar el hero, las tarjetas de proyectos (Saudino con su mini línea de tiempo), la experiencia, la educación, las habilidades y el contacto.
 - [ ] Mostrarle el resultado a Simón y pedir feedback antes de pulir.
 
 ### Fase 3: Responsive, accesibilidad y animaciones
