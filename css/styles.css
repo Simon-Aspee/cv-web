@@ -1,0 +1,88 @@
+/* =====================================================================
+   styles.css — Estilos BASE (Fase 1): solo lo justo para que se lea.
+   El diseño visual completo llega en la Fase 2.
+   Todos los colores están en :root para cambiarlos en una línea.
+   ===================================================================== */
+
+:root {
+  --color-fondo: #0f1115;
+  --color-superficie: #171a21;
+  --color-borde: #2a2e38;
+  --color-texto: #e8e8ea;
+  --color-texto-suave: #a3a6ad;
+  --color-acento: #c8444f;        /* Rojo del CV: botones, bordes, íconos. */
+  --color-acento-claro: #ec8f97;  /* Versión clara para texto chico (contraste AA). */
+
+  --fuente-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ancho-max: 46rem;
+  --radio: 0.75rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-base);
+  line-height: 1.6;
+}
+
+.hero,
+main,
+.footer {
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-acento-claro);
+}
+
+.icono {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-inline-end: 0.35em;
+}
+
+.tarjeta {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 1rem;
+  margin-block: 1rem;
+}
+
+.meta,
+.nota,
+.proyecto__tipo,
+.proyecto__contexto {
+  color: var(--color-texto-suave);
+}
+
+/* Texto solo para lectores de pantalla. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
