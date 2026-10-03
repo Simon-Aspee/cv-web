@@ -26,8 +26,8 @@ const DATOS = {
     foto: "assets/foto.jpg",
 
     // CV en PDF: en null el botón "Descargar CV" no aparece.
-    // Cuando esté listo, cambia a "assets/cv-simon-aspee.pdf".
-    cvPdf: null
+    // Si actualizas la página, actualiza también el PDF (y viceversa).
+    cvPdf: "assets/cv-simon-aspee.pdf"
   },
 
   /* ---------- Distintivo de disponibilidad ---------- */

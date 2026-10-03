@@ -258,7 +258,7 @@ const DATOS = {
 - [ ] Meta tags: `title`, `description`, Open Graph (`og:title`, `og:description`, `og:image`, `og:url`, `og:locale` es_CL) y Twitter card `summary_large_image`. Todas con la URL absoluta `https://simon-aspee.netlify.app/`.
 - [ ] Crear `assets/og-image.jpg` de 1200×630 con foto, nombre y subtítulo. Si no se puede generar, proponerle a Simón cómo hacerla.
 - [ ] Crear `favicon.svg`.
-- [ ] Botón "Descargar CV": si `cvPdf` es `null`, el botón no se muestra.
+- [x] Botón "Descargar CV": si `cvPdf` es `null`, el botón no se muestra.
 - [ ] `<noscript>` con nombre, correo y LinkedIn.
 - [ ] Crear `README.md` con:
   - Qué es el proyecto.
@@ -332,7 +332,7 @@ const DATOS = {
 3. Proyecto farmacéutico: nombre, su rol en el equipo y cuánto detalle publicar (confirmarlo con el equipo). *(Por ahora se muestra con la descripción borrador.)*
 4. ~~React Native: ¿se incluye o no?~~ No se incluye (así coincide con el PDF).
 5. ~~Aprobar el "Sobre mí", los datos destacados y la línea de hobbies.~~ Aprobados.
-6. ~~Foto en buena calidad~~ Lista (`assets/foto.jpg`, 600×600, 58 KB, sin metadatos). Falta el PDF final: el borrador actual dice "San Miguel, Santiago" y Simón lo cambiará a "Santiago, Chile" antes de moverlo a `assets/`.
+6. ~~Foto en buena calidad y el nuevo PDF del CV.~~ Listos: `assets/foto.jpg` (600×600, 58 KB, sin metadatos) y `assets/cv-simon-aspee.pdf`. El PDF dice "San Miguel, Santiago" (la comuna, no la dirección); Simón decidió dejarlo así (3 oct. 2026).
 
 **Riesgos:**
 
