@@ -155,13 +155,13 @@ Quedó fuera: "Especialidad técnica en Electricidad" (sigue en Educación y en 
 ### 5.8 Habilidades (sin niveles)
 
 - **Lenguajes:** Python, Kotlin, SQL
-- **Conocimientos básicos:** JavaScript, Java, C, React Native
+- **Conocimientos básicos:** JavaScript, Java, C
 - **Bases de datos:** MySQL, PostgreSQL, MongoDB
 - **Herramientas:** Git y GitHub, VS Code, IntelliJ IDEA, Netlify, Aiven
 - **Desarrollo asistido por IA:** Claude Code (plan mode, subagentes, MCP)
 - **Próximo paso:** Android con Jetpack Compose → iOS con Swift/SwiftUI
 - **Idiomas:** Español nativo · Inglés B1 (certificado TOEFL)
-- React Native: va en "Conocimientos básicos", sin nivel (decisión de Simón, 3 oct. 2026).
+- React Native: no se incluye, para que la web coincida con el PDF (decisión de Simón, 3 oct. 2026).
 
 ### 5.9 Cierre de contacto (aprobado, 3 oct. 2026)
 
@@ -226,8 +226,8 @@ const DATOS = {
 
 - [x] Crear el repo público `cv-web` en GitHub Desktop y clonarlo.
 - [x] Copiar `CLAUDE.md` y `plan.md` a la raíz del repo.
-- [ ] Crear la carpeta `assets/` y poner `foto.jpg`. El PDF puede llegar después.
-- [ ] Instalar la skill: `npx skills add https://github.com/anthropics/skills --skill frontend-design`
+- [x] Crear la carpeta `assets/` y poner `foto.jpg`. El PDF puede llegar después.
+- [x] Instalar la skill: `npx skills add https://github.com/anthropics/skills --skill frontend-design` (se instaló en `.agents/skills/`, con enlace en `.claude/skills/`, más `skills-lock.json`; Simón decidió subirlos al repo).
 - [x] Abrir Claude Code en la carpeta y escribir: *"Lee CLAUDE.md y plan.md. Empieza por la Fase 1 en plan mode."*
 
 ### Fase 1: Estructura y contenido
@@ -237,7 +237,7 @@ const DATOS = {
 - [x] Crear `js/datos.js` con todo el contenido de la sección 5, comentado para que Simón sepa qué editar.
 - [x] Crear `js/main.js`, que renderiza cada sección desde `DATOS`. Una sección vacía no se muestra.
 - [x] Verificar que funciona abriendo `index.html` con doble clic.
-- [x] Mostrar a Simón los textos [BORRADOR] y resolver con él los [PENDIENTE]. Quedan abiertos: tecnologías de Saudino v2, nombre y rol del proyecto farmacéutico, foto y PDF.
+- [x] Mostrar a Simón los textos [BORRADOR] y resolver con él los [PENDIENTE]. Quedan abiertos: tecnologías de Saudino v2, nombre y rol del proyecto farmacéutico, y el PDF.
 
 ### Fase 2: Diseño visual (con la skill frontend-design)
 
@@ -330,9 +330,9 @@ const DATOS = {
 1. Tecnologías de Saudino v2: frontend, conexión con MySQL y Aiven, y si tiene panel para el dueño. *(Por ahora quedan solo MySQL, Aiven, Netlify y Claude Code.)*
 2. ~~Aprobar la sección "Lo que aprendí" de Saudino.~~ Aprobada.
 3. Proyecto farmacéutico: nombre, su rol en el equipo y cuánto detalle publicar (confirmarlo con el equipo). *(Por ahora se muestra con la descripción borrador.)*
-4. ~~React Native: ¿se incluye o no?~~ Va en "Conocimientos básicos".
+4. ~~React Native: ¿se incluye o no?~~ No se incluye (así coincide con el PDF).
 5. ~~Aprobar el "Sobre mí", los datos destacados y la línea de hobbies.~~ Aprobados.
-6. Foto en buena calidad y el nuevo PDF del CV.
+6. ~~Foto en buena calidad~~ Lista (`assets/foto.jpg`, 600×600, 58 KB, sin metadatos). Falta el PDF final: el borrador actual dice "San Miguel, Santiago" y Simón lo cambiará a "Santiago, Chile" antes de moverlo a `assets/`.
 
 **Riesgos:**
 

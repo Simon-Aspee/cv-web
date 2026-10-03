@@ -53,6 +53,11 @@ a {
   color: var(--color-acento-claro);
 }
 
+.hero__foto {
+  width: 8rem;
+  margin-top: 1.5rem;
+}
+
 .icono {
   display: inline-flex;
   vertical-align: middle;

@@ -22,8 +22,8 @@ const DATOS = {
     subtitulo: "Estudiante de Ingeniería Civil Informática · En camino al desarrollo móvil nativo (Kotlin/Android y Swift/iOS)",
     ubicacion: "Santiago, Chile", // Solo ciudad y país. Nunca la dirección.
 
-    // Foto: en null no se muestra. Cuando subas la foto, cambia a "assets/foto.jpg".
-    foto: null,
+    // Foto: en null no se muestra. Debe pesar 200 KB o menos.
+    foto: "assets/foto.jpg",
 
     // CV en PDF: en null el botón "Descargar CV" no aparece.
     // Cuando esté listo, cambia a "assets/cv-simon-aspee.pdf".
@@ -167,7 +167,7 @@ const DATOS = {
   /* ---------- Habilidades (sin niveles ni porcentajes) ---------- */
   habilidades: [
     { grupo: "Lenguajes", items: ["Python", "Kotlin", "SQL"] },
-    { grupo: "Conocimientos básicos", items: ["JavaScript", "Java", "C", "React Native"] },
+    { grupo: "Conocimientos básicos", items: ["JavaScript", "Java", "C"] },
     { grupo: "Bases de datos", items: ["MySQL", "PostgreSQL", "MongoDB"] },
     { grupo: "Herramientas", items: ["Git y GitHub", "VS Code", "IntelliJ IDEA", "Netlify", "Aiven"] },
     { grupo: "Desarrollo asistido por IA", items: ["Claude Code (plan mode, subagentes, MCP)"] },
