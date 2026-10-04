@@ -31,7 +31,12 @@
     telefono: svgTrazo('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>'),
     ubicacion: svgTrazo('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'),
     descarga: svgTrazo('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>'),
-    externo: svgTrazo('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/>')
+    externo: svgTrazo('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/>'),
+    // Íconos para los datos destacados (campo "icono" en datos.js).
+    libro: svgTrazo('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'),
+    globo: svgTrazo('<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'),
+    maletin: svgTrazo('<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'),
+    codigo: svgTrazo('<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>')
   };
 
   /* ---------- Utilidades ---------- */
@@ -95,6 +100,45 @@
   // "Simón Aspée" → "SA".
   function iniciales(nombre) {
     return nombre.trim().split(/\s+/).map(function (parte) { return parte[0]; }).join("").slice(0, 2).toUpperCase();
+  }
+
+  // Iniciales para la insignia de un lugar: "KFC" → "KFC", "Decosméticos" → "D".
+  function inicialesLugar(nombre) {
+    const palabras = nombre.trim().split(/\s+/).filter(function (p) { return /\p{L}/u.test(p); });
+    if (palabras.length === 1 && palabras[0].length <= 4) return palabras[0].toUpperCase();
+    return iniciales(palabras.join(" "));
+  }
+
+  // Logo de una empresa o institución. Si no hay imagen, o no carga, muestra sus iniciales.
+  // Es decorativo (alt vacío): el nombre del lugar ya está escrito al lado.
+  function logoLugar(ruta, nombre) {
+    const insignia = crear("span", { class: "logo-lugar logo-lugar--iniciales", "aria-hidden": "true" }, inicialesLugar(nombre));
+    if (!hayTexto(ruta)) return insignia;
+    const imagen = crear("img", { class: "logo-lugar", src: ruta, alt: "", width: "40", height: "40", loading: "lazy", decoding: "async" });
+    imagen.addEventListener("error", function () { imagen.replaceWith(insignia); });
+    return imagen;
+  }
+
+  // Etiqueta de tecnología, con su logo si está en js/logos.js.
+  function etiqueta(texto) {
+    const propio = Object.prototype.hasOwnProperty;
+    const hayLogos = typeof LOGOS !== "undefined" && typeof ICONOS_MARCAS !== "undefined";
+    const ids = hayLogos && propio.call(LOGOS, texto) ? LOGOS[texto] : [];
+    const logos = ids.filter(function (id) { return propio.call(ICONOS_MARCAS, id); }).map(function (id) {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      svg.setAttribute("class", "etiqueta__logo");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("width", "16");
+      svg.setAttribute("height", "16");
+      svg.setAttribute("fill", ICONOS_MARCAS[id].color);
+      svg.setAttribute("aria-hidden", "true");
+      svg.setAttribute("focusable", "false");
+      path.setAttribute("d", ICONOS_MARCAS[id].path);
+      svg.append(path);
+      return svg;
+    });
+    return crear("li", { class: "etiqueta" }, logos.concat(texto));
   }
 
   function renderHero(perfil, disponibilidad, contacto) {
@@ -165,11 +209,18 @@
   }
 
   function renderDestacados(destacados) {
-    const items = textos(destacados);
+    // Cada destacado es { icono, texto }; también se acepta solo el texto.
+    const items = (destacados || []).map(function (d) {
+      return typeof d === "string" ? { icono: null, texto: d } : d;
+    }).filter(function (d) { return d && hayTexto(d.texto); });
     if (!items.length) return;
     const seccion = abrirSeccion("destacados", "Datos destacados", true);
-    seccion.append(crear("ul", { class: "destacados" }, items.map(function (texto) {
-      return crear("li", { class: "destacado" }, texto);
+    // Cada destacado es una tarjeta rellena; el color se alterna en el CSS.
+    seccion.append(crear("ul", { class: "destacados" }, items.map(function (d) {
+      return crear("li", { class: "tarjeta tarjeta--rellena destacado" }, [
+        hayTexto(d.icono) && Object.prototype.hasOwnProperty.call(ICONOS, d.icono) ? icono(d.icono) : null,
+        crear("span", {}, d.texto)
+      ]);
     })));
   }
 
@@ -190,22 +241,29 @@
     const aprendizajes = textos(proyecto.aprendizajes);
     const tecnologias = textos(proyecto.tecnologias);
 
-    const tarjeta = crear("article", { class: destacado ? "tarjeta proyecto proyecto--destacado" : "tarjeta proyecto" });
+    const tarjeta = crear("article", { class: destacado ? "tarjeta tarjeta--franja proyecto proyecto--destacado" : "tarjeta tarjeta--franja proyecto" });
 
-    tarjeta.append(crear("div", { class: "proyecto__cabecera" }, [
-      crear("h3", { class: "proyecto__nombre" }, proyecto.nombre),
-      " ",
-      hayTexto(proyecto.estado) ? crear("span", { class: "estado" }, proyecto.estado) : null
+    // Franja de color: nombre, estado, tipo y contexto.
+    tarjeta.append(crear("div", { class: "tarjeta__franja" }, [
+      crear("div", { class: "proyecto__cabecera" }, [
+        crear("h3", { class: "proyecto__nombre" }, proyecto.nombre),
+        " ",
+        hayTexto(proyecto.estado) ? crear("span", { class: "estado" }, proyecto.estado) : null
+      ]),
+      hayTexto(proyecto.tipo) ? crear("p", {}, proyecto.tipo) : null,
+      hayTexto(proyecto.contexto) ? crear("p", {}, proyecto.contexto) : null
     ]));
 
-    if (hayTexto(proyecto.tipo)) tarjeta.append(crear("p", { class: "texto-suave" }, proyecto.tipo));
-    if (hayTexto(proyecto.contexto)) tarjeta.append(crear("p", { class: "texto-suave" }, proyecto.contexto));
-    if (hayTexto(proyecto.descripcion)) tarjeta.append(crear("p", { class: "proyecto__descripcion" }, proyecto.descripcion));
+    // Cuerpo oscuro: el resto del contenido.
+    const cuerpo = crear("div", { class: "tarjeta__cuerpo" });
+    tarjeta.append(cuerpo);
+
+    if (hayTexto(proyecto.descripcion)) cuerpo.append(crear("p", { class: "proyecto__descripcion" }, proyecto.descripcion));
 
     if (historia.length) {
-      tarjeta.append(crear("h4", { class: "subtitulo" }, "Historia"));
+      cuerpo.append(crear("h4", { class: "subtitulo" }, "Historia"));
       // La última etapa es la actual: se marca con el punto relleno.
-      tarjeta.append(crear("ol", { class: "linea-tiempo" }, historia.map(function (etapa, i) {
+      cuerpo.append(crear("ol", { class: "linea-tiempo" }, historia.map(function (etapa, i) {
         const actual = i === historia.length - 1;
         return crear("li", { class: actual ? "linea-tiempo__etapa linea-tiempo__etapa--actual" : "linea-tiempo__etapa" }, [
           crear("p", { class: "linea-tiempo__cabecera" }, [
@@ -219,21 +277,22 @@
     }
 
     if (aprendizajes.length) {
-      tarjeta.append(crear("h4", { class: "subtitulo" }, "Lo que aprendí"));
-      tarjeta.append(crear("ul", { class: "lista" }, aprendizajes.map(function (texto) { return crear("li", {}, texto); })));
+      cuerpo.append(crear("h4", { class: "subtitulo" }, "Lo que aprendí"));
+      cuerpo.append(crear("ul", { class: "lista" }, aprendizajes.map(function (texto) { return crear("li", {}, texto); })));
     }
 
     if (tecnologias.length) {
-      tarjeta.append(crear("ul", { class: "etiquetas", "aria-label": "Tecnologías" }, tecnologias.map(function (texto) {
-        return crear("li", { class: "etiqueta" }, texto);
-      })));
+      cuerpo.append(crear("ul", { class: "etiquetas", "aria-label": "Tecnologías" }, tecnologias.map(etiqueta)));
     }
 
     const pie = [];
     if (hayTexto(links.demo)) pie.push(linkExterno(links.demo, { class: "boton" }, [icono("externo"), "Ver sitio en vivo"]));
     if (hayTexto(links.codigo)) pie.push(linkExterno(links.codigo, { class: "boton" }, [icono("github"), "Ver código"]));
     else if (hayTexto(links.notaCodigo)) pie.push(crear("p", { class: "texto-suave" }, links.notaCodigo));
-    if (pie.length) tarjeta.append(crear("div", { class: "acciones proyecto__links" }, pie));
+    if (pie.length) cuerpo.append(crear("div", { class: "acciones proyecto__links" }, pie));
+
+    // Si el cuerpo quedó vacío, la tarjeta es solo la franja.
+    if (!cuerpo.childNodes.length) cuerpo.remove();
 
     return tarjeta;
   }
@@ -248,10 +307,11 @@
     });
   }
 
-  // Título + detalle a la izquierda, fechas a la derecha (abajo en el celular).
-  function cabeceraTarjeta(titulo, detalle, fechas) {
-    return crear("div", { class: "tarjeta__cabecera" }, [
-      crear("div", {}, [
+  // [logo] + título y detalle + fechas (a la derecha en pantallas anchas, abajo en el celular).
+  function cabeceraTarjeta(titulo, detalle, fechas, logo) {
+    return crear("div", { class: logo ? "tarjeta__cabecera tarjeta__cabecera--con-logo" : "tarjeta__cabecera" }, [
+      logo || null,
+      crear("div", { class: "tarjeta__titulos" }, [
         crear("h3", {}, titulo),
         hayTexto(detalle) ? crear("p", { class: "tarjeta__detalle" }, detalle) : null
       ]),
@@ -269,17 +329,20 @@
     const seccion = abrirSeccion("experiencia", "Experiencia");
 
     lista.forEach(function (trabajo) {
-      seccion.append(crear("article", { class: "tarjeta" }, [
-        cabeceraTarjeta(trabajo.cargo, trabajo.lugar, trabajo.fechas),
-        hayTexto(trabajo.descripcion) ? crear("p", {}, trabajo.descripcion) : null
+      // Solo lleva logo (o insignia) si hay un lugar o un logo definido.
+      const logo = hayTexto(trabajo.logo) || hayTexto(trabajo.lugar) ? logoLugar(trabajo.logo, trabajo.lugar || trabajo.cargo) : null;
+      seccion.append(crear("article", { class: "tarjeta tarjeta--franja" }, [
+        crear("div", { class: "tarjeta__franja" }, cabeceraTarjeta(trabajo.cargo, trabajo.lugar, trabajo.fechas, logo)),
+        hayTexto(trabajo.descripcion) ? crear("div", { class: "tarjeta__cuerpo" }, crear("p", {}, trabajo.descripcion)) : null
       ]));
     });
 
     if (otros.length) {
-      seccion.append(crear("article", { class: "tarjeta" }, [
-        hayTexto(otrosTrabajos.titulo) ? crear("h3", {}, otrosTrabajos.titulo) : null,
-        crear("ul", { class: "lista-compacta" }, otros.map(function (t) {
+      seccion.append(crear("article", { class: "tarjeta tarjeta--franja" }, [
+        hayTexto(otrosTrabajos.titulo) ? crear("div", { class: "tarjeta__franja" }, crear("h3", {}, otrosTrabajos.titulo)) : null,
+        crear("ul", { class: "tarjeta__cuerpo lista-compacta" }, otros.map(function (t) {
           return crear("li", { class: "lista-compacta__item" }, [
+            logoLugar(t.logo, t.lugar),
             crear("span", { class: "lista-compacta__lugar" }, t.lugar),
             " ",
             hayTexto(t.cargo) ? crear("span", { class: "lista-compacta__cargo" }, t.cargo) : null,
@@ -296,8 +359,8 @@
     if (!lista.length) return;
     const seccion = abrirSeccion("educacion", "Educación");
     lista.forEach(function (estudio) {
-      seccion.append(crear("article", { class: "tarjeta" }, [
-        cabeceraTarjeta(estudio.institucion, estudio.titulo, estudio.fechas)
+      seccion.append(crear("article", { class: "tarjeta tarjeta--rellena" }, [
+        cabeceraTarjeta(estudio.institucion, estudio.titulo, estudio.fechas, logoLugar(estudio.logo, estudio.institucion))
       ]));
     });
   }
@@ -309,9 +372,7 @@
     seccion.append(crear("div", { class: "tarjeta habilidades" }, grupos.map(function (grupo) {
       return crear("div", { class: "habilidad" }, [
         crear("h3", { class: "habilidad__grupo" }, grupo.grupo),
-        crear("ul", { class: "etiquetas" }, textos(grupo.items).map(function (texto) {
-          return crear("li", { class: "etiqueta" }, texto);
-        }))
+        crear("ul", { class: "etiquetas" }, textos(grupo.items).map(etiqueta))
       ]);
     })));
   }

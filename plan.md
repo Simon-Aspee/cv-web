@@ -28,9 +28,10 @@ Página web estática, de una sola página, que funciona como CV y portafolio de
 | Repo | Público en GitHub (cuenta `Simon-Aspee`). Nombre sugerido: `cv-web`. |
 | Hosting | Netlify gratis. Dirección: `simon-aspee.netlify.app` (si está tomada, Simón elige otra). |
 | Idioma | Español de Chile. Inglés queda para una fase futura. |
-| Estilo | Modo oscuro, minimalista, contenido en tarjetas, una columna centrada. |
-| Referencia visual | moure.dev: tomar la sensación (limpio, tarjetas, íconos sociales arriba). No copiar su marca, logo ni textos. |
-| Color de acento | El rojo del CV de Simón (aprox. `#C8444F`). Es de prueba: debe poder cambiarse en una línea. |
+| Estilo | Modo oscuro, colorido, contenido en tarjetas, una columna centrada y fondo de cuadrícula. (Antes era "minimalista"; Simón pidió más color el 3 oct. 2026.) |
+| Referencia visual | moure.dev: tarjetas de color sólido con un bloque blanco desplazado detrás, cuadrícula de fondo, íconos sociales arriba. No copiar su marca, logo ni textos. |
+| Colores | Rojo del CV (aprox. `#C8444F`) como principal, con azul, ámbar y verde de apoyo; un color por sección. Cada color se cambia en una línea de `:root`. |
+| Imágenes | Logos de tecnologías (Simple Icons) y de empresas e instituciones (`assets/logos/`). |
 | Responsive | Mobile-first. Tiene que verse bien desde 360 px hasta pantallas grandes. |
 | Contenido editable | Todo el contenido vive en `js/datos.js`. |
 | Contacto | Correo, teléfono, botón de WhatsApp, LinkedIn y GitHub. Ubicación solo "Santiago, Chile". **Sin dirección.** |
@@ -179,8 +180,10 @@ cv-web/
 │   └── styles.css      ← variables de diseño en :root + estilos
 ├── js/
 │   ├── datos.js        ← TODO el contenido editable (const DATOS = {...})
+│   ├── logos.js        ← logos de tecnologías (Simple Icons) para las etiquetas
 │   └── main.js         ← lee DATOS y renderiza cada sección
 ├── assets/
+│   ├── logos/          ← logos de empresas e instituciones (campo `logo` en datos.js)
 │   ├── foto.jpg        ← la aporta Simón (optimizada a ≤ 200 KB)
 │   ├── og-image.jpg    ← 1200×630, para la vista previa al compartir
 │   ├── favicon.svg     ← por ejemplo, las iniciales "SA"
@@ -200,7 +203,7 @@ const DATOS = {
   perfil: { nombre: "", subtitulo: "", ubicacion: "", foto: "assets/foto.jpg", cvPdf: null },
   disponibilidad: { mostrar: true, texto: "" },
   contacto: { correo: "", telefono: "", whatsapp: { numero: "", mensaje: "" }, linkedin: "", github: "" },
-  destacados: ["", "", ""],
+  destacados: [{ icono: "libro", texto: "" }],   // icono: "libro", "globo", "maletin", "codigo", "telefono" o null
   sobreMi: ["párrafo 1", "párrafo 2"],
   proyectos: [
     {
@@ -211,9 +214,9 @@ const DATOS = {
       links: { demo: "", codigo: null, notaCodigo: "" }
     }
   ],
-  experiencia: [{ cargo: "", lugar: "", fechas: "", descripcion: "" }],
-  otrosTrabajos: { titulo: "", items: [{ lugar: "", cargo: "", fechas: "" }] },
-  educacion: [{ institucion: "", titulo: "", fechas: "" }],
+  experiencia: [{ cargo: "", lugar: "", fechas: "", descripcion: "", logo: null }],   // logo: "assets/logos/x.png" o null
+  otrosTrabajos: { titulo: "", items: [{ lugar: "", cargo: "", fechas: "", logo: null }] },
+  educacion: [{ institucion: "", titulo: "", fechas: "", logo: null }],
   habilidades: [{ grupo: "", items: [] }]
 };
 ```
@@ -241,10 +244,10 @@ const DATOS = {
 
 ### Fase 2: Diseño visual (con la skill frontend-design)
 
-- [x] Definir la dirección visual dentro de las decisiones de la sección 3. (Fondo carbón cálido `#181416`, fuente Schibsted Grotesk, foto con esquinas de ícono de app y la línea de tiempo de Saudino como elemento protagonista.)
+- [x] Definir la dirección visual dentro de las decisiones de la sección 3. (Fondo carbón cálido `#181416`, fuente Schibsted Grotesk, foto con esquinas de ícono de app y la línea de tiempo de Saudino como elemento protagonista. Después del primer feedback de Simón se sumaron color por sección, tarjetas con sombra blanca, cuadrícula de fondo y logos.)
 - [x] Definir en `:root` las variables CSS de colores, tipografía, espaciados y radios.
 - [x] Diseñar el hero, las tarjetas de proyectos (Saudino con su mini línea de tiempo), la experiencia, la educación, las habilidades y el contacto.
-- [ ] Mostrarle el resultado a Simón y pedir feedback antes de pulir.
+- [x] Mostrarle el resultado a Simón y pedir feedback antes de pulir. (Feedback del 3 oct. 2026: más color, cuadrícula, sombra blanca y logos; después, más compacto, con letras más chicas y destacados en filas con ícono. Logos de Decosméticos y del liceo aportados por Simón.)
 
 ### Fase 3: Responsive, accesibilidad y animaciones
 

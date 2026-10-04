@@ -49,11 +49,13 @@ const DATOS = {
     github: "https://github.com/Simon-Aspee"
   },
 
-  /* ---------- Datos destacados (3 datos cortos y reales) ---------- */
+  /* ---------- Datos destacados (3 datos cortos y reales) ----------
+     icono: uno de estos → "libro", "globo", "maletin", "codigo", "telefono".
+            Usa null si no quieres ícono. */
   destacados: [
-    "3.er año de Ingeniería Civil Informática (USS)",
-    "Inglés B1 (certificado TOEFL)",
-    "Estudiando y trabajando desde 2021"
+    { icono: "libro", texto: "3.er año de Ingeniería Civil Informática (USS)" },
+    { icono: "globo", texto: "Inglés B1 (certificado TOEFL)" },
+    { icono: "maletin", texto: "Estudiando y trabajando desde 2021" }
   ],
 
   /* ---------- Sobre mí (un texto por párrafo) ---------- */
@@ -125,43 +127,51 @@ const DATOS = {
   ],
 
   /* ---------- Experiencia ----------
-     lugar: "" si no corresponde. */
+     lugar: "" si no corresponde.
+     logo: ruta a una imagen cuadrada en assets/logos/, o null.
+           Si es null (o la imagen no carga) se muestra una insignia con iniciales. */
   experiencia: [
     {
       cargo: "Tutor particular de matemáticas",
       lugar: "",
       fechas: "oct. 2025 – actualidad",
-      descripcion: "Clases particulares de matemáticas a una estudiante escolar, con compromiso constante. Sus notas han mejorado desde que empezamos."
+      descripcion: "Clases particulares de matemáticas a una estudiante escolar, con compromiso constante. Sus notas han mejorado desde que empezamos.",
+      logo: null
     },
     {
       cargo: "Práctica técnica",
       lugar: "AZA | Acero Sostenible",
       fechas: "feb. 2023 – nov. 2023",
-      descripcion: "Práctica técnica del liceo (casi un año) como electricista en mantenimiento de motores."
+      descripcion: "Práctica técnica del liceo (casi un año) como electricista en mantenimiento de motores.",
+      logo: "assets/logos/aza.png"
     }
   ],
 
-  /* ---------- Otros trabajos (formato compacto, una línea cada uno) ---------- */
+  /* ---------- Otros trabajos (formato compacto, una línea cada uno) ----------
+     logo: igual que en Experiencia (ruta o null). */
   otrosTrabajos: {
     titulo: "Trabajos part-time de fin de semana, mientras estudiaba",
     items: [
-      { lugar: "Mass", cargo: "Cajero, bodeguero y limpieza", fechas: "ene. 2026 – mar. 2026" },
-      { lugar: "KFC", cargo: "Cajero y limpieza", fechas: "mar. 2025 – ene. 2026" },
-      { lugar: "Decosméticos", cargo: "Cajero y bodeguero", fechas: "oct. 2021 – may. 2024" }
+      { lugar: "Mass", cargo: "Cajero, bodeguero y limpieza", fechas: "ene. 2026 – mar. 2026", logo: "assets/logos/mass.png" },
+      { lugar: "KFC", cargo: "Cajero y limpieza", fechas: "mar. 2025 – ene. 2026", logo: "assets/logos/kfc.png" },
+      { lugar: "Decosméticos", cargo: "Cajero y bodeguero", fechas: "oct. 2021 – may. 2024", logo: "assets/logos/decosmeticos.png" }
     ]
   },
 
-  /* ---------- Educación ---------- */
+  /* ---------- Educación ----------
+     logo: igual que en Experiencia (ruta o null). */
   educacion: [
     {
       institucion: "Universidad San Sebastián",
       titulo: "Ingeniería Civil Informática (3.er año)",
-      fechas: "mar. 2024 – actualidad"
+      fechas: "mar. 2024 – actualidad",
+      logo: "assets/logos/uss.png"
     },
     {
       institucion: "Liceo Industrial Chileno Alemán",
       titulo: "Enseñanza media técnico-profesional, especialidad Electricidad",
-      fechas: "2020 – 2023"
+      fechas: "2020 – 2023",
+      logo: "assets/logos/lichan.png"
     }
   ],
 

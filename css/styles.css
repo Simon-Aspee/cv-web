@@ -1,44 +1,83 @@
 /* =====================================================================
    styles.css — Diseño de la página (mobile-first).
    Todos los colores, tamaños y radios están en :root: para cambiar algo
-   (por ejemplo, el color de acento) basta con editar una línea.
+   (por ejemplo, un color) basta con editar una línea.
    ===================================================================== */
 
 :root {
   color-scheme: dark;
 
-  /* ---------- Colores ---------- */
+  /* ---------- Colores base ---------- */
   --color-fondo: #181416;          /* Carbón cálido */
-  --color-superficie: #221d20;     /* Tarjetas */
-  --color-borde: #352e32;
-  --color-borde-acento: #5a2c33;   /* Borde de las tarjetas destacadas */
+  --color-superficie: #221d20;     /* Tarjetas oscuras */
+  --color-borde: #4a4045;
   --color-texto: #f1ebec;
   --color-texto-suave: #b5abae;    /* Fechas y textos secundarios (AA) */
-  --color-acento: #c8444f;         /* Rojo del CV: botones, línea de tiempo, íconos */
-  --color-acento-oscuro: #b33a45;  /* Hover del botón principal */
-  --color-acento-claro: #f2939b;   /* Para texto chico con acento (AA) */
-  --color-sobre-acento: #ffffff;   /* Texto encima del rojo */
-  --color-halo: rgba(200, 68, 79, 0.25);
+  --color-tinta: #181416;          /* Texto oscuro sobre colores claros */
+  --color-cuadricula: rgba(255, 255, 255, 0.07);
+
+  /* ---------- Colores de acento ---------- */
+  --color-rojo: #c8444f;           /* Principal (rojo del CV). Texto blanco encima. */
+  --color-rojo-oscuro: #b33a45;    /* Hover del botón principal */
+  --color-rojo-claro: #f2939b;     /* Links y texto chico sobre fondo oscuro (AA) */
+  --color-azul: #4da3ff;           /* Texto oscuro encima */
+  --color-ambar: #f2b33d;          /* Texto oscuro encima */
+  --color-verde: #3dbe7a;          /* Texto oscuro encima */
+  --color-blanco: #ffffff;
+
+  /* ---------- Sombra dura ("bloque blanco desplazado") ---------- */
+  --color-sombra: #f1ebec;
+  --sombra: 5px 5px 0 var(--color-sombra);
+  --sombra-boton: 3px 3px 0 var(--color-sombra);
 
   /* ---------- Tipografía ---------- */
   --fuente: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --texto-xs: 0.875rem;   /* 14 px */
-  --texto-sm: 0.9375rem;  /* 15 px */
-  --texto-base: 1rem;     /* 16 px */
-  --texto-md: 1.125rem;   /* 18 px */
-  --texto-lg: 1.5rem;     /* 24 px */
-  --texto-xl: clamp(2.25rem, 1.5rem + 3.6vw, 3.5rem); /* 36 → 56 px */
+  --texto-xs: 0.8125rem;  /* 13 px */
+  --texto-sm: 0.875rem;   /* 14 px */
+  --texto-base: 0.9375rem;/* 15 px */
+  --texto-md: 1.0625rem;  /* 17 px */
+  --texto-lg: 1.25rem;    /* 20 px */
+  --texto-xl: clamp(2rem, 1.6rem + 2vw, 2.75rem); /* 32 → 44 px */
 
   /* ---------- Medidas ---------- */
-  --ancho: 42rem;
+  --ancho: 40rem;
   --margen: 1rem;
-  --separacion-secciones: 3.5rem;
-  --radio-sm: 10px;       /* Botones */
-  --radio: 14px;          /* Tarjetas */
-  --radio-lg: 20px;       /* Tarjetas destacadas */
+  --separacion-secciones: 2.5rem;
+  --relleno: 1rem;        /* Relleno interno de las tarjetas */
+  --radio-sm: 6px;        /* Botones */
+  --radio: 8px;           /* Tarjetas */
   --radio-foto: 26%;      /* Esquinas de ícono de app */
   --radio-pildora: 999px;
   --toque: 44px;          /* Área táctil mínima */
+}
+
+/* ---------- Color de cada sección ----------
+   --color-seccion: fondo de las franjas y tarjetas rellenas.
+   --texto-seccion: color del texto encima (blanco sobre rojo, oscuro sobre el resto). */
+
+#sobre-mi {
+  --color-seccion: var(--color-sombra);
+}
+
+#proyectos,
+#contacto {
+  --color-seccion: var(--color-rojo);
+  --texto-seccion: var(--color-blanco);
+}
+
+#experiencia {
+  --color-seccion: var(--color-ambar);
+  --texto-seccion: var(--color-tinta);
+}
+
+#educacion {
+  --color-seccion: var(--color-azul);
+  --texto-seccion: var(--color-tinta);
+}
+
+#habilidades {
+  --color-seccion: var(--color-verde);
+  --texto-seccion: var(--color-tinta);
 }
 
 /* ---------- Base ---------- */
@@ -59,11 +98,16 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-fondo);
+  background-color: var(--color-fondo);
+  /* Cuadrícula de fondo: dos degradados de 1 px que se repiten. */
+  background-image:
+    linear-gradient(var(--color-cuadricula) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-cuadricula) 1px, transparent 1px);
+  background-size: 32px 32px;
   color: var(--color-texto);
   font-family: var(--fuente);
   font-size: var(--texto-base);
-  line-height: 1.6;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -90,18 +134,18 @@ img {
 }
 
 a {
-  color: var(--color-acento-claro);
+  color: var(--color-rojo-claro);
   text-underline-offset: 0.2em;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-acento-claro);
+  outline: 3px solid var(--color-ambar);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: var(--color-acento);
-  color: var(--color-sobre-acento);
+  background: var(--color-rojo);
+  color: var(--color-blanco);
 }
 
 .icono {
@@ -171,34 +215,36 @@ main,
   height: var(--toque);
   border: 1px solid var(--color-borde);
   border-radius: 50%;
+  background: var(--color-fondo);
   color: var(--color-texto);
   transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 .redes__link:hover {
-  border-color: var(--color-acento);
-  color: var(--color-acento-claro);
+  border-color: var(--color-rojo);
+  color: var(--color-rojo-claro);
 }
 
 /* ---------- Hero ---------- */
 
 .hero__cuerpo {
   display: grid;
-  gap: 1.5rem;
-  padding-block: 2rem 2.75rem;
+  gap: 1.25rem;
+  padding-block: 1.25rem 2rem;
 }
 
 .hero__foto {
-  width: 6.5rem;
-  height: 6.5rem;
+  width: 5.5rem;
+  height: 5.5rem;
   border-radius: var(--radio-foto);
   object-fit: cover;
+  box-shadow: var(--sombra);
 }
 
 .hero__texto {
   display: grid;
   justify-items: start;
-  gap: 0.875rem;
+  gap: 0.65rem;
 }
 
 .hero__nombre {
@@ -209,8 +255,8 @@ main,
 }
 
 .hero__subtitulo {
-  max-width: 36ch;
-  font-size: var(--texto-md);
+  max-width: 40ch;
+  font-size: var(--texto-base);
   line-height: 1.45;
 }
 
@@ -240,17 +286,18 @@ main,
   line-height: 1.4;
 }
 
+/* Punto verde = disponible. */
 .distintivo__punto {
   flex-shrink: 0;
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 50%;
-  background: var(--color-acento);
-  box-shadow: 0 0 0 3px var(--color-halo);
+  background: var(--color-verde);
+  box-shadow: 0 0 0 3px rgba(61, 190, 122, 0.25);
 }
 
 .hero__texto .acciones {
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
 }
 
 /* ---------- Botones ---------- */
@@ -259,7 +306,7 @@ main,
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.875rem;
 }
 
 .boton {
@@ -268,31 +315,34 @@ main,
   justify-content: center;
   gap: 0.5rem;
   min-height: var(--toque);
-  padding: 0.6rem 1.1rem;
-  border: 1px solid var(--color-borde);
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-sombra);
   border-radius: var(--radio-sm);
-  background: transparent;
+  background: var(--color-fondo);
   color: var(--color-texto);
   font-size: var(--texto-sm);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  box-shadow: var(--sombra-boton);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
 }
 
-.boton:hover {
-  border-color: var(--color-acento);
+/* Al presionar, el botón "se hunde" sobre su sombra. */
+.boton:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
 }
 
 .boton--principal {
-  border-color: var(--color-acento);
-  background: var(--color-acento);
-  color: var(--color-sobre-acento);
+  border-color: var(--color-rojo);
+  background: var(--color-rojo);
+  color: var(--color-blanco);
 }
 
 .boton--principal:hover {
-  border-color: var(--color-acento-oscuro);
-  background: var(--color-acento-oscuro);
+  border-color: var(--color-rojo-oscuro);
+  background: var(--color-rojo-oscuro);
 }
 
 /* ---------- Secciones ---------- */
@@ -305,45 +355,108 @@ main {
 
 .seccion {
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .seccion > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: var(--texto-lg);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
-/* ---------- Tarjetas ---------- */
+/* Cuadrito con el color de la sección (leyenda de color). */
+.seccion > h2::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 2px;
+  background: var(--color-seccion, var(--color-sombra));
+}
+
+/* ---------- Tarjetas ----------
+   .tarjeta            oscura, con sombra blanca (textos largos)
+   .tarjeta--rellena   fondo del color de la sección (contenido corto)
+   .tarjeta--franja    franja de color arriba + cuerpo oscuro */
 
 .tarjeta {
   display: grid;
   gap: 0.5rem;
-  padding: 1.25rem;
+  padding: var(--relleno);
   border: 1px solid var(--color-borde);
   border-radius: var(--radio);
   background: var(--color-superficie);
+  box-shadow: var(--sombra);
 }
 
 /* :where() deja la especificidad en 0, así una clase propia del h3 siempre gana. */
 :where(.tarjeta) h3 {
   font-size: var(--texto-md);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
 
+.tarjeta--rellena {
+  border-color: var(--color-seccion);
+  background: var(--color-seccion);
+  color: var(--texto-seccion);
+}
+
+.tarjeta--franja {
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.tarjeta__franja {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem var(--relleno);
+  background: var(--color-seccion);
+  color: var(--texto-seccion);
+}
+
+.tarjeta__cuerpo {
+  display: grid;
+  gap: 0.5rem;
+  padding: var(--relleno);
+}
+
+/* Sobre color, las fechas y textos secundarios usan el mismo color que el resto (AA). */
+.tarjeta__franja .fecha,
+.tarjeta--rellena .fecha {
+  color: inherit;
+  font-weight: 500;
+}
+
 .tarjeta__cabecera {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 0.15rem 1rem;
+}
+
+.tarjeta__cabecera--con-logo {
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.875rem;
+}
+
+.tarjeta__cabecera--con-logo .logo-lugar {
+  grid-row: span 2;
+  align-self: start;
+}
+
+.tarjeta__cabecera .fecha {
+  grid-column: -2 / -1;
 }
 
 .tarjeta__detalle {
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
   font-weight: 500;
 }
 
@@ -355,37 +468,70 @@ main {
   max-width: 65ch;
 }
 
+/* ---------- Logos de empresas e instituciones ---------- */
+
+.logo-lugar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 3px;
+  border: 2px solid var(--color-tinta);
+  border-radius: var(--radio-sm);
+  background: var(--color-blanco);
+  object-fit: contain;
+}
+
+/* Insignia con iniciales cuando no hay imagen. */
+.logo-lugar--iniciales {
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  color: var(--color-tinta);
+  font-size: var(--texto-xs);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
 /* ---------- Datos destacados ---------- */
 
+/* Filas rectangulares, una debajo de la otra, con un ícono en negro antes del texto. */
 .destacados {
   display: grid;
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-  background: var(--color-superficie);
-}
-
-.destacado {
-  padding: 1rem 1.25rem;
-  font-size: var(--texto-sm);
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.destacado + .destacado {
-  border-top: 1px solid var(--color-borde);
-}
-
-/* ---------- Proyectos ---------- */
-
-.proyecto {
   gap: 0.75rem;
 }
 
-.proyecto--destacado {
-  padding: 1.5rem;
-  border-color: var(--color-borde-acento);
-  border-radius: var(--radio-lg);
+.destacado {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem var(--relleno);
+  font-size: var(--texto-sm);
+  font-weight: 700;
+  line-height: 1.35;
 }
+
+.destacado .icono svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Colores alternados: azul, verde, ámbar. */
+.destacado:nth-child(3n + 1) {
+  --color-seccion: var(--color-azul);
+  --texto-seccion: var(--color-tinta);
+}
+
+.destacado:nth-child(3n + 2) {
+  --color-seccion: var(--color-verde);
+  --texto-seccion: var(--color-tinta);
+}
+
+.destacado:nth-child(3n) {
+  --color-seccion: var(--color-ambar);
+  --texto-seccion: var(--color-tinta);
+}
+
+/* ---------- Proyectos ---------- */
 
 .proyecto__cabecera {
   display: flex;
@@ -401,17 +547,16 @@ main {
 }
 
 .estado {
-  padding: 0.2rem 0.7rem;
-  border: 1px solid var(--color-borde);
+  padding: 0.15rem 0.7rem;
+  border: 1.5px solid currentColor;
   border-radius: var(--radio-pildora);
-  color: var(--color-texto-suave);
   font-size: var(--texto-xs);
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .subtitulo {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   color: var(--color-texto-suave);
   font-size: var(--texto-xs);
   font-weight: 600;
@@ -425,7 +570,7 @@ main {
 .linea-tiempo {
   --nodo: 0.875rem;
   --sangria: 1.75rem;
-  --hueco: 1.25rem;
+  --hueco: 1rem;
   display: grid;
   gap: var(--hueco);
   padding-left: var(--sangria);
@@ -444,14 +589,14 @@ main {
   left: calc(-1 * var(--sangria));
   width: var(--nodo);
   height: var(--nodo);
-  border: 2px solid var(--color-acento);
+  border: 2px solid var(--color-rojo);
   border-radius: 50%;
   background: var(--color-superficie);
 }
 
 .linea-tiempo__etapa--actual::before {
-  background: var(--color-acento);
-  box-shadow: 0 0 0 4px var(--color-halo);
+  background: var(--color-rojo);
+  box-shadow: 0 0 0 4px rgba(200, 68, 79, 0.25);
 }
 
 /* Tramo que une cada punto con el siguiente. */
@@ -462,7 +607,7 @@ main {
   bottom: calc(-1 * var(--hueco) - 0.8em + var(--nodo) / 2);
   left: calc(-1 * var(--sangria) + var(--nodo) / 2 - 1px);
   width: 2px;
-  background: var(--color-acento);
+  background: var(--color-rojo);
 }
 
 .linea-tiempo__cabecera {
@@ -492,7 +637,7 @@ main {
   background: var(--color-texto-suave);
 }
 
-/* ---------- Etiquetas ---------- */
+/* ---------- Etiquetas (con logo de la tecnología) ---------- */
 
 .etiquetas {
   display: flex;
@@ -505,26 +650,36 @@ main {
 }
 
 .etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.3rem 0.75rem;
   border: 1px solid var(--color-borde);
   border-radius: 1rem; /* Píldora en una línea; si el texto baja a dos, queda rectángulo redondeado. */
   background: var(--color-fondo);
   font-size: var(--texto-xs);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.4;
+}
+
+.etiqueta__logo {
+  flex-shrink: 0;
 }
 
 /* ---------- Otros trabajos ---------- */
 
+/* Celular: logo a la izquierda; lugar, cargo y fechas apilados. */
 .lista-compacta__item {
   display: grid;
-  grid-template-columns: 1fr auto;
-  column-gap: 1rem;
-  padding-block: 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.875rem;
+  padding-block: 0.7rem;
   border-top: 1px solid var(--color-borde);
 }
 
 .lista-compacta__item:first-child {
+  padding-top: 0;
   border-top: 0;
 }
 
@@ -532,33 +687,31 @@ main {
   padding-bottom: 0;
 }
 
+.lista-compacta__item .logo-lugar {
+  grid-row: span 3;
+  align-self: start;
+}
+
 .lista-compacta__lugar {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .lista-compacta__cargo {
-  grid-column: 1 / -1;
   color: var(--color-texto-suave);
   font-size: var(--texto-sm);
-}
-
-.lista-compacta__fechas {
-  grid-row: 1;
-  grid-column: 2;
-  align-self: baseline;
+  line-height: 1.4;
 }
 
 /* ---------- Habilidades ---------- */
 
-/* Una sola tarjeta con una fila por grupo, separadas por líneas. */
 .habilidades {
   gap: 0;
 }
 
 .habilidad {
   display: grid;
-  gap: 0.6rem;
-  padding-block: 1rem;
+  gap: 0.5rem;
+  padding-block: 0.8rem;
   border-top: 1px solid var(--color-borde);
 }
 
@@ -572,28 +725,48 @@ main {
 }
 
 .habilidad__grupo {
-  color: var(--color-texto-suave);
+  color: var(--color-verde);
   font-size: var(--texto-xs);
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* ---------- Cierre (contacto) ---------- */
+/* ---------- Cierre (contacto): tarjeta roja ---------- */
 
 .seccion--cierre {
-  padding: 1.75rem 1.5rem;
-  border: 1px solid var(--color-borde-acento);
-  border-radius: var(--radio-lg);
-  background: var(--color-superficie);
+  padding: 1.25rem var(--relleno) 1.5rem;
+  border-radius: var(--radio);
+  background: var(--color-seccion);
+  color: var(--texto-seccion);
+  box-shadow: var(--sombra);
 }
 
 .seccion--cierre > h2 {
-  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+  letter-spacing: -0.03em;
+}
+
+.seccion--cierre > h2::before {
+  display: none;
 }
 
 .seccion--cierre .acciones {
   margin-top: 0.5rem;
+}
+
+/* Sobre el rojo, los botones van oscuros con sombra oscura. */
+.seccion--cierre .boton {
+  --color-sombra: var(--color-tinta);
+  border-color: var(--color-tinta);
+}
+
+.seccion--cierre .boton--principal {
+  border-color: var(--color-blanco);
+  background: var(--color-blanco);
+  color: var(--color-tinta);
+}
+
+.seccion--cierre .boton--principal:hover {
+  background: var(--color-texto);
 }
 
 /* ---------- Footer ---------- */
@@ -611,13 +784,23 @@ main {
     --margen: 1.5rem;
   }
 
-  .destacados {
-    grid-template-columns: repeat(3, 1fr);
+  /* La fecha pasa a la derecha del título. */
+  .tarjeta__cabecera {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .destacado + .destacado {
-    border-top: 0;
-    border-left: 1px solid var(--color-borde);
+  .tarjeta__cabecera--con-logo {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .tarjeta__cabecera--con-logo .logo-lugar {
+    grid-row: auto;
+    align-self: center;
+  }
+
+  .tarjeta__cabecera .fecha {
+    grid-row: 1;
+    align-self: start;
   }
 
   .habilidad {
@@ -625,37 +808,45 @@ main {
     align-items: baseline;
     gap: 1rem;
   }
+
+  /* Otros trabajos: la fecha pasa a la derecha del lugar. */
+  .lista-compacta__item {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .lista-compacta__item .logo-lugar {
+    grid-row: span 2;
+    align-self: center;
+  }
+
+  .lista-compacta__cargo {
+    grid-column: 2 / -1;
+  }
+
+  .lista-compacta__fechas {
+    grid-row: 1;
+    grid-column: 3;
+  }
 }
 
 /* ---------- Escritorio ---------- */
 
 @media (min-width: 768px) {
   :root {
-    --separacion-secciones: 4.5rem;
+    --separacion-secciones: 3rem;
+    --relleno: 1.25rem;
   }
 
   .hero__cuerpo {
     grid-template-columns: auto 1fr;
     align-items: start;
-    gap: 2rem;
-    padding-block: 3.5rem 4rem;
+    gap: 1.75rem;
+    padding-block: 2.25rem 2.75rem;
   }
 
   .hero__foto {
-    width: 8.5rem;
-    height: 8.5rem;
-  }
-
-  .tarjeta {
-    padding: 1.5rem;
-  }
-
-  .proyecto--destacado {
-    padding: 2rem;
-  }
-
-  .seccion--cierre {
-    padding: 2.25rem 2rem;
+    width: 7rem;
+    height: 7rem;
   }
 }
 

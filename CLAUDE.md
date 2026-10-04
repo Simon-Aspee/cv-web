@@ -41,8 +41,10 @@ Página web estática, de una sola página, con el CV de Simón Aspée, estudian
 index.html        estructura semántica + meta tags (sin textos del CV escritos a mano)
 css/styles.css    variables de diseño en :root + estilos
 js/datos.js       TODO el contenido editable
+js/logos.js       logos de tecnologías (Simple Icons) para las etiquetas
 js/main.js        renderiza las secciones desde DATOS
 assets/           foto.jpg, og-image.jpg, favicon.svg, cv-simon-aspee.pdf
+assets/logos/     logos de empresas e instituciones
 README.md         cómo actualizar el contenido
 plan.md           plan, contenido y checklist por fases
 ```
@@ -67,9 +69,11 @@ plan.md           plan, contenido y checklist por fases
 ## Reglas de diseño
 
 - Usa la **skill frontend-design** para la ejecución visual, siempre dentro de estas decisiones:
-  - Modo oscuro (tema único), minimalista, contenido en tarjetas y una columna centrada.
-  - Referencia: **moure.dev**. Toma la sensación (limpio, tarjetas, íconos sociales arriba). No copies su marca, logo ni textos.
-  - Acento: el rojo del CV de Simón (aprox. `#C8444F`). Es de prueba, así que todos los colores van como variables CSS en `:root` para poder cambiarlos en una línea.
+  - Modo oscuro (tema único), colorido, contenido en tarjetas, una columna centrada y fondo de cuadrícula.
+  - Referencia: **moure.dev**. Toma su lenguaje visual (tarjetas de color sólido con un bloque blanco desplazado detrás, cuadrícula de fondo, íconos sociales arriba). No copies su marca, logo ni textos.
+  - Colores (decisión de Simón, 3 oct. 2026): el rojo del CV (aprox. `#C8444F`) es el principal, con azul, ámbar y verde de apoyo y un color por sección. Todos van como variables CSS en `:root` para poder cambiarlos en una línea.
+  - Tarjetas: las de contenido corto van rellenas de color; las de texto largo llevan una franja de color arriba y el cuerpo oscuro, para que se lean bien.
+  - Logos: tecnologías con Simple Icons (CC0) en `js/logos.js`; empresas e instituciones en `assets/logos/`, con el campo `logo` en `datos.js` (si falta, se muestra una insignia con iniciales).
   - Contraste: el rojo sobre fondo oscuro **no alcanza AA para texto pequeño**. Úsalo en botones (con texto blanco), bordes, íconos y títulos grandes. Para texto chico usa un tono más claro.
 - **Mobile-first:** perfecto en 360 px y escalar a escritorio. Sin scroll horizontal. Áreas táctiles de al menos 44 px.
 - **Animaciones sutiles** (aparición al hacer scroll, hover suave). Respeta `prefers-reduced-motion`.
