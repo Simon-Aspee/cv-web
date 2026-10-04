@@ -113,11 +113,30 @@ const DATOS = {
       nombre: "Plataforma de gestión de devoluciones y residuos farmacéuticos",
       tipo: "Emprendimiento universitario",
       estado: "En desarrollo (fase inicial)",
-      contexto: "Proyecto en equipo del Taller de Emprendimiento de la Universidad San Sebastián.",
-      // [BORRADOR] falta confirmar con el equipo cuánto detalle se publica.
-      descripcion: "Plataforma para gestionar devoluciones y residuos de medicamentos, enfocada en droguerías y distribuidoras y en el proceso ante el ISP.",
-      historia: [],
-      aprendizajes: [],
+      contexto: "Proyecto en equipo (3 integrantes) del Taller de Emprendimiento de la Universidad San Sebastián.",
+      descripcion: "Plataforma B2B (SaaS) para que droguerías y distribuidores registren y sigan las devoluciones de medicamentos que reciben de distintas farmacias. Cada caso queda en un expediente digital con productos, lotes, guía, documentos, responsable y estado.",
+      historia: [
+        {
+          etapa: "Idea inicial",
+          fecha: "",
+          texto: "Partimos pensando en una herramienta para farmacias que gestionara medicamentos por vencer y residuos."
+        },
+        {
+          etapa: "Validación en terreno",
+          fecha: "sep. 2026",
+          texto: "Visitamos farmacias en Providencia y documentamos cuatro entrevistas. Ya tenían rutas de devolución establecidas, así que cambiamos el foco a droguerías y distribuidores, que reciben devoluciones de varias farmacias."
+        },
+        {
+          etapa: "MVP conceptual",
+          fecha: "sep. 2026",
+          texto: "Prototipo visual (no funcional) con tres vistas: registro de devoluciones, listado de casos y seguimiento del expediente."
+        }
+      ],
+      aprendizajes: [
+        "Validar el problema con usuarios reales antes de construir.",
+        "Cambiar el segmento cuando la evidencia no respalda la hipótesis inicial.",
+        "Distinguir una devolución de un residuo: no todo medicamento devuelto se gestiona como residuo."
+      ],
       tecnologias: [],
       links: {
         demo: null,

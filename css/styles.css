@@ -780,7 +780,9 @@ main {
   display: none;
 }
 
+/* Celular: los botones de contacto van uno debajo del otro, del mismo ancho. */
 .seccion--cierre .acciones {
+  display: grid;
   margin-top: 0.5rem;
 }
 
@@ -846,6 +848,14 @@ main {
   .lista-compacta__fechas {
     grid-row: 1;
     grid-column: 3;
+  }
+}
+
+/* Desde aquí caben los tres botones de contacto en una sola fila. */
+@media (min-width: 680px) {
+  .seccion--cierre .acciones {
+    display: flex;
+    flex-wrap: nowrap;
   }
 }
 

@@ -127,9 +127,14 @@ Quedó fuera: "Especialidad técnica en Electricidad" (sigue en Educación y en 
 
 - **Estado:** En desarrollo (fase inicial).
 - **Contexto:** proyecto en equipo del Taller de Emprendimiento de la Universidad San Sebastián.
-- **Descripción [BORRADOR]:** Plataforma para gestionar devoluciones y residuos de medicamentos, enfocada en droguerías y distribuidoras y en el proceso ante el ISP.
-- **Sin link.**
-- **Se muestra** con la descripción [BORRADOR], sin nombre ni rol (decisión de Simón, 3 oct. 2026).
+- **Descripción (aprobada, 3 oct. 2026; fuente: informe "Solemne 1" del Taller de Emprendimiento, 11/09/2026):** Plataforma B2B (SaaS) para que droguerías y distribuidores registren y sigan las devoluciones de medicamentos que reciben de distintas farmacias. Cada caso queda en un expediente digital con productos, lotes, guía, documentos, responsable y estado.
+- **Contexto:** Proyecto en equipo (3 integrantes) del Taller de Emprendimiento de la Universidad San Sebastián.
+- **Historia:**
+  - **Idea inicial:** Partimos pensando en una herramienta para farmacias que gestionara medicamentos por vencer y residuos.
+  - **Validación en terreno · sep. 2026:** Visitamos farmacias en Providencia y documentamos cuatro entrevistas. Ya tenían rutas de devolución establecidas, así que cambiamos el foco a droguerías y distribuidores, que reciben devoluciones de varias farmacias.
+  - **MVP conceptual · sep. 2026:** Prototipo visual (no funcional) con tres vistas: registro de devoluciones, listado de casos y seguimiento del expediente.
+- **Lo que aprendí:** validar el problema con usuarios reales antes de construir; cambiar el segmento cuando la evidencia no respalda la hipótesis inicial; distinguir una devolución de un residuo.
+- **Sin link.** No se publican los nombres de los compañeros ni de las farmacias visitadas.
 - **[PENDIENTE]:**
   - Nombre del proyecto, si tiene.
   - Rol de Simón en el equipo.

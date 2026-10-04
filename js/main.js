@@ -394,7 +394,7 @@
     if (cierre && hayTexto(cierre.texto)) seccion.append(crear("p", {}, cierre.texto));
 
     const acciones = [];
-    if (whatsapp) acciones.push(linkExterno(whatsapp, { class: "boton boton--verde" }, [icono("whatsapp"), "Escribir por WhatsApp"]));
+    if (whatsapp) acciones.push(linkExterno(whatsapp, { class: "boton boton--verde" }, [icono("whatsapp"), "WhatsApp"]));
     if (hayTexto(contacto.correo)) acciones.push(crear("a", { class: "boton boton--azul", href: "mailto:" + contacto.correo }, [icono("correo"), contacto.correo]));
     if (hayTexto(contacto.telefono)) {
       acciones.push(crear("a", { class: "boton boton--ambar", href: "tel:" + contacto.telefono.replace(/[^\d+]/g, "") }, [icono("telefono"), contacto.telefono]));
