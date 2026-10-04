@@ -167,7 +167,14 @@
     texto.append(crear("h1", { class: "hero__nombre" }, perfil.nombre));
 
     if (hayTexto(perfil.subtitulo)) {
-      texto.append(crear("p", { class: "hero__subtitulo" }, perfil.subtitulo));
+      // Cada parte separada por " · " va en su propia línea (con un espacio entre medio
+      // para que los lectores de pantalla no las lean pegadas).
+      const lineas = [];
+      perfil.subtitulo.split("·").map(function (parte) { return parte.trim(); }).filter(hayTexto).forEach(function (parte, i) {
+        if (i > 0) lineas.push(" ");
+        lineas.push(crear("span", { class: "hero__subtitulo-linea" }, parte));
+      });
+      texto.append(crear("p", { class: "hero__subtitulo" }, lineas));
     }
 
     if (hayTexto(perfil.ubicacion)) {
@@ -186,7 +193,7 @@
       acciones.push(crear("a", { class: "boton boton--principal", href: perfil.cvPdf, download: true }, [icono("descarga"), "Descargar CV"]));
     }
     if (whatsapp) {
-      acciones.push(linkExterno(whatsapp, { class: "boton" }, [icono("whatsapp"), "WhatsApp"]));
+      acciones.push(linkExterno(whatsapp, { class: "boton boton--verde" }, [icono("whatsapp"), "WhatsApp"]));
     }
     if (acciones.length) {
       texto.append(crear("div", { class: "acciones" }, acciones));
@@ -387,10 +394,10 @@
     if (cierre && hayTexto(cierre.texto)) seccion.append(crear("p", {}, cierre.texto));
 
     const acciones = [];
-    if (whatsapp) acciones.push(linkExterno(whatsapp, { class: "boton boton--principal" }, [icono("whatsapp"), "Escribir por WhatsApp"]));
-    if (hayTexto(contacto.correo)) acciones.push(crear("a", { class: "boton", href: "mailto:" + contacto.correo }, [icono("correo"), contacto.correo]));
+    if (whatsapp) acciones.push(linkExterno(whatsapp, { class: "boton boton--verde" }, [icono("whatsapp"), "Escribir por WhatsApp"]));
+    if (hayTexto(contacto.correo)) acciones.push(crear("a", { class: "boton boton--azul", href: "mailto:" + contacto.correo }, [icono("correo"), contacto.correo]));
     if (hayTexto(contacto.telefono)) {
-      acciones.push(crear("a", { class: "boton", href: "tel:" + contacto.telefono.replace(/[^\d+]/g, "") }, [icono("telefono"), contacto.telefono]));
+      acciones.push(crear("a", { class: "boton boton--ambar", href: "tel:" + contacto.telefono.replace(/[^\d+]/g, "") }, [icono("telefono"), contacto.telefono]));
     }
     seccion.append(crear("div", { class: "acciones" }, acciones));
   }

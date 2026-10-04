@@ -255,9 +255,13 @@ main,
 }
 
 .hero__subtitulo {
-  max-width: 40ch;
   font-size: var(--texto-base);
   line-height: 1.45;
+}
+
+/* Cada parte del subtítulo empieza en su propia línea. */
+.hero__subtitulo-linea {
+  display: block;
 }
 
 .hero__ubicacion {
@@ -343,6 +347,33 @@ main,
 .boton--principal:hover {
   border-color: var(--color-rojo-oscuro);
   background: var(--color-rojo-oscuro);
+}
+
+/* Botones de contacto: WhatsApp verde, correo azul, teléfono ámbar (texto oscuro, AA). */
+.boton--verde {
+  --fondo-boton: var(--color-verde);
+}
+
+.boton--azul {
+  --fondo-boton: var(--color-azul);
+}
+
+.boton--ambar {
+  --fondo-boton: var(--color-ambar);
+}
+
+.boton--verde,
+.boton--azul,
+.boton--ambar {
+  border-color: var(--fondo-boton);
+  background: var(--fondo-boton);
+  color: var(--color-tinta);
+}
+
+.boton--verde:hover,
+.boton--azul:hover,
+.boton--ambar:hover {
+  filter: brightness(0.92);
 }
 
 /* ---------- Secciones ---------- */
@@ -753,20 +784,9 @@ main {
   margin-top: 0.5rem;
 }
 
-/* Sobre el rojo, los botones van oscuros con sombra oscura. */
+/* Sobre el rojo, los botones llevan borde oscuro para separarse del fondo. */
 .seccion--cierre .boton {
-  --color-sombra: var(--color-tinta);
   border-color: var(--color-tinta);
-}
-
-.seccion--cierre .boton--principal {
-  border-color: var(--color-blanco);
-  background: var(--color-blanco);
-  color: var(--color-tinta);
-}
-
-.seccion--cierre .boton--principal:hover {
-  background: var(--color-texto);
 }
 
 /* ---------- Footer ---------- */

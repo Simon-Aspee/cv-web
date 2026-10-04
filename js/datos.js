@@ -19,6 +19,7 @@ const DATOS = {
   /* ---------- Perfil (parte de arriba de la página) ---------- */
   perfil: {
     nombre: "Simón Aspée",
+    // Cada parte separada por " · " se muestra en su propia línea.
     subtitulo: "Estudiante de Ingeniería Civil Informática · En camino al desarrollo móvil nativo (Kotlin/Android y Swift/iOS)",
     ubicacion: "Santiago, Chile", // Solo ciudad y país. Nunca la dirección.
 
