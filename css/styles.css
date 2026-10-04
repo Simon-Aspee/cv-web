@@ -138,9 +138,42 @@ a {
   text-underline-offset: 0.2em;
 }
 
+/* Foco visible al navegar con teclado: ámbar sobre fondo oscuro… */
 :focus-visible {
   outline: 3px solid var(--color-ambar);
   outline-offset: 3px;
+}
+
+/* …y oscuro dentro de la tarjeta roja, donde el ámbar se perdería. */
+.seccion--cierre :focus-visible {
+  outline-color: var(--color-tinta);
+}
+
+/* <main> recibe el foco del link "Saltar al contenido"; no necesita contorno. */
+main:focus {
+  outline: none;
+}
+
+/* Link "Saltar al contenido": escondido arriba hasta que llega el foco del teclado. */
+.saltar {
+  position: absolute;
+  top: 0.5rem;
+  left: var(--margen);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radio-sm);
+  background: var(--color-ambar);
+  color: var(--color-tinta);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.saltar:focus {
+  transform: none;
 }
 
 ::selection {
@@ -880,6 +913,39 @@ main {
   }
 }
 
+/* ---------- Animaciones al hacer scroll ----------
+   main.js agrega .revelar solo a las tarjetas que están fuera de la pantalla al cargar,
+   y .revelar--visible cuando aparecen. Sin JS, todo se ve normal. */
+
+.revelar {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.revelar--visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* La línea de tiempo se "dibuja": cada punto aparece y luego baja el trazo al siguiente.
+   --i es el orden de la etapa (lo pone main.js). */
+.revelar .linea-tiempo__etapa::before {
+  transform: scale(0);
+  transition: transform 0.25s ease calc(var(--i, 0) * 0.25s + 0.15s);
+}
+
+.revelar .linea-tiempo__etapa::after {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease calc(var(--i, 0) * 0.25s + 0.3s);
+}
+
+.revelar--visible .linea-tiempo__etapa::before,
+.revelar--visible .linea-tiempo__etapa::after {
+  transform: none;
+}
+
 /* ---------- Movimiento reducido ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -888,5 +954,12 @@ main {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+
+  .revelar,
+  .revelar .linea-tiempo__etapa::before,
+  .revelar .linea-tiempo__etapa::after {
+    opacity: 1;
+    transform: none;
   }
 }

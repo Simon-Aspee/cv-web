@@ -74,9 +74,15 @@
     return span;
   }
 
-  // Link que se abre en otra pestaña.
+  // Link que se abre en otra pestaña. Avisa a los lectores de pantalla que se abre aparte.
+  const AVISO_PESTANA = " (se abre en otra pestaña)";
   function linkExterno(href, atributos, hijos) {
-    return crear("a", Object.assign({ href: href, target: "_blank", rel: "noopener" }, atributos), hijos);
+    const attrs = Object.assign({ href: href, target: "_blank", rel: "noopener" }, atributos);
+    if (attrs["aria-label"]) {
+      attrs["aria-label"] += AVISO_PESTANA;
+      return crear("a", attrs, hijos);
+    }
+    return crear("a", attrs, [].concat(hijos, crear("span", { class: "sr-only" }, AVISO_PESTANA)));
   }
 
   function linkWhatsApp(whatsapp) {
@@ -272,7 +278,8 @@
       // La última etapa es la actual: se marca con el punto relleno.
       cuerpo.append(crear("ol", { class: "linea-tiempo" }, historia.map(function (etapa, i) {
         const actual = i === historia.length - 1;
-        return crear("li", { class: actual ? "linea-tiempo__etapa linea-tiempo__etapa--actual" : "linea-tiempo__etapa" }, [
+        // --i: orden de la etapa, para que la animación dibuje los puntos uno tras otro.
+        return crear("li", { class: actual ? "linea-tiempo__etapa linea-tiempo__etapa--actual" : "linea-tiempo__etapa", style: "--i: " + i }, [
           crear("p", { class: "linea-tiempo__cabecera" }, [
             hayTexto(etapa.etapa) ? crear("strong", {}, etapa.etapa) : null,
             " ",
@@ -408,6 +415,31 @@
     footer.append(crear("p", {}, "© " + new Date().getFullYear() + " " + perfil.nombre));
   }
 
+  /* ---------- Animaciones ---------- */
+
+  // Las tarjetas que están más abajo aparecen suave al llegar a ellas con el scroll,
+  // y la línea de tiempo se "dibuja". Solo se activa si el navegador lo soporta y la
+  // persona no pidió reducir el movimiento; si no, todo se ve igual, sin animar.
+  // Lo que ya se ve al cargar no se anima (así no se retrasa la carga).
+  function activarAnimaciones() {
+    const reducir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducir || !("IntersectionObserver" in window)) return;
+
+    const observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (entrada) {
+        if (!entrada.isIntersecting) return;
+        entrada.target.classList.add("revelar--visible");
+        observador.unobserve(entrada.target);
+      });
+    }, { rootMargin: "0px 0px -10% 0px" });
+
+    document.querySelectorAll("main .tarjeta, main .seccion--cierre").forEach(function (el) {
+      if (el.getBoundingClientRect().top < window.innerHeight) return;
+      el.classList.add("revelar");
+      observador.observe(el);
+    });
+  }
+
   /* ---------- Armar la página ---------- */
 
   const perfil = DATOS.perfil || {};
@@ -422,4 +454,5 @@
   renderHabilidades(DATOS.habilidades);
   renderContacto(contacto, DATOS.cierreContacto);
   renderFooter(perfil);
+  activarAnimaciones();
 })();

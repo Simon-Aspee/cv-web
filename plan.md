@@ -256,10 +256,10 @@ const DATOS = {
 
 ### Fase 3: Responsive, accesibilidad y animaciones
 
-- [ ] Revisar en 360, 390, 768, 1024 y 1440 px. Que no haya scroll horizontal.
-- [ ] Botones y links táctiles de al menos 44 px.
-- [ ] Contraste AA, foco visible, `alt` en las imágenes y `lang="es"`.
-- [ ] Animaciones sutiles (aparición al hacer scroll, hover suave) que se desactivan con `prefers-reduced-motion`.
+- [x] Revisar en 360, 390, 768, 1024 y 1440 px. Que no haya scroll horizontal. (Auditoría automática: 0 desbordes en los 5 anchos.)
+- [x] Botones y links táctiles de al menos 44 px. (0 bajo 44 px.)
+- [x] Contraste AA, foco visible, `alt` en las imágenes y `lang="es"`. (0 textos bajo AA; foco ámbar sobre fondo oscuro y oscuro en la tarjeta roja; link "Saltar al contenido"; aviso "se abre en otra pestaña" para lectores de pantalla.)
+- [x] Animaciones sutiles (aparición al hacer scroll, hover suave) que se desactivan con `prefers-reduced-motion`. (Las tarjetas bajo la primera pantalla aparecen al llegar a ellas y la línea de tiempo se dibuja; probado en tiempo real en 360, 390 y 1280 px y con movimiento reducido.)
 
 ### Fase 4: Vista previa al compartir y detalles
 

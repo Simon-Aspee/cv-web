@@ -19,10 +19,13 @@
   <script src="js/main.js" defer></script>
 </head>
 <body>
+  <!-- Para navegar con teclado: aparece al presionar Tab y salta directo al contenido. -->
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
   <!-- Cada contenedor parte vacío y oculto. main.js lo llena y lo muestra solo si hay contenido. -->
   <header id="hero" class="hero"></header>
 
-  <main>
+  <main id="contenido" tabindex="-1">
     <section id="destacados" class="seccion" hidden></section>
     <section id="sobre-mi" class="seccion" hidden></section>
     <section id="proyectos" class="seccion" hidden></section>
