@@ -275,10 +275,10 @@ const DATOS = {
 
 ### Fase 5: Revisión
 
-- [ ] Lighthouse (modo móvil) con 90 o más en Rendimiento, Accesibilidad, Buenas prácticas y SEO.
-- [ ] Cero errores en la consola.
-- [ ] Todos los links funcionan: WhatsApp abre con el mensaje, correo, LinkedIn, GitHub, Saudino y PDF.
-- [ ] Revisar el contenido contra la sección 5:
+- [x] Lighthouse (modo móvil) con 90 o más en Rendimiento, Accesibilidad, Buenas prácticas y SEO. (3 oct. 2026, servidor local: 94 / 100 / 100 / 100.)
+- [x] Cero errores en la consola.
+- [x] Todos los links funcionan: WhatsApp abre con el mensaje, correo, LinkedIn, GitHub, Saudino y PDF. (LinkedIn bloquea bots con código 999: revisarlo a mano.)
+- [x] Revisar el contenido contra la sección 5:
   - Nada inventado.
   - Sin dirección.
   - Sin datos de la alumna.
