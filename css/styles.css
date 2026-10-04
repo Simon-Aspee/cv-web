@@ -209,6 +209,26 @@ main:focus {
   border: 0;
 }
 
+/* ---------- Sin JavaScript (<noscript>) ---------- */
+
+.sin-js {
+  display: grid;
+  gap: 0.75rem;
+  max-width: var(--ancho);
+  margin: 3rem auto;
+  padding: 1.5rem var(--margen);
+}
+
+.sin-js h1 {
+  font-size: var(--texto-xl);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.sin-js__nota {
+  color: var(--color-texto-suave);
+}
+
 /* ---------- Columna centrada ---------- */
 
 .hero,

@@ -263,12 +263,12 @@ const DATOS = {
 
 ### Fase 4: Vista previa al compartir y detalles
 
-- [ ] Meta tags: `title`, `description`, Open Graph (`og:title`, `og:description`, `og:image`, `og:url`, `og:locale` es_CL) y Twitter card `summary_large_image`. Todas con la URL absoluta `https://simon-aspee.netlify.app/`.
-- [ ] Crear `assets/og-image.jpg` de 1200×630 con foto, nombre y subtítulo. Si no se puede generar, proponerle a Simón cómo hacerla.
-- [ ] Crear `favicon.svg`.
+- [x] Meta tags: `title`, `description`, Open Graph (`og:title`, `og:description`, `og:image`, `og:url`, `og:locale` es_CL) y Twitter card `summary_large_image`. Todas con la URL absoluta `https://simon-aspee.netlify.app/`. (También `canonical` y `theme-color`.)
+- [x] Crear `assets/og-image.jpg` de 1200×630 con foto, nombre y subtítulo. (89 KB, generada desde una plantilla HTML con el estilo del sitio.)
+- [x] Crear `favicon.svg`. (Más `apple-touch-icon.png` de 180×180 para iPhone.)
 - [x] Botón "Descargar CV": si `cvPdf` es `null`, el botón no se muestra.
-- [ ] `<noscript>` con nombre, correo y LinkedIn.
-- [ ] Crear `README.md` con:
+- [x] `<noscript>` con nombre, correo y LinkedIn.
+- [x] Crear `README.md` con:
   - Qué es el proyecto.
   - Cómo agregar un proyecto o un trabajo en `datos.js`.
   - Un recordatorio: si actualizas la página, actualiza también el PDF.
